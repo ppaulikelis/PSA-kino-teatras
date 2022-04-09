@@ -31,6 +31,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import PropTypes from 'prop-types';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import managerServices from '../../services/manager/manager.services';
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -86,71 +87,75 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired
 };
 
-const data = [
-  {
-    id: 1,
-    name: 'Shrek 1',
-    genre: 'Horror',
-    startDate: '2022-04-07',
-    endDate: '2022-04-31'
-  },
-  {
-    id: 2,
-    name: 'Shrek 2',
-    genre: 'Horror',
-    startDate: '2022-04-07',
-    endDate: '2022-04-31'
-  },
-  {
-    id: 3,
-    name: 'Shrek 3',
-    genre: 'Horror',
-    startDate: '2022-04-07',
-    endDate: '2022-04-31'
-  },
-  {
-    id: 4,
-    name: 'Shrek 4',
-    genre: 'Horror',
-    startDate: '2022-04-07',
-    endDate: '2022-04-31'
-  },
-  {
-    id: 5,
-    name: 'Shrek 5',
-    genre: 'Horror',
-    startDate: '2022-04-07',
-    endDate: '2022-04-31'
-  },
-  {
-    id: 6,
-    name: 'Shrek 6',
-    genre: 'Horror',
-    startDate: '2022-04-07',
-    endDate: '2022-04-31'
-  },
-  {
-    id: 7,
-    name: 'Shrek 7',
-    genre: 'Horror',
-    startDate: '2022-04-07',
-    endDate: '2022-04-31'
-  },
-  {
-    id: 8,
-    name: 'Shrek 8',
-    genre: 'Horror',
-    startDate: '2022-04-07',
-    endDate: '2022-04-31'
-  },
-  {
-    id: 9,
-    name: 'Shrek 9',
-    genre: 'Horror',
-    startDate: '2022-04-07',
-    endDate: '2022-04-31'
-  }
-];
+// const data = [
+//   {
+//     id: 1,
+//     name: 'Shrek 1',
+//     genre: 'Horror',
+//     startDate: '2022-04-07',
+//     endDate: '2022-04-31'
+//   },
+//   {
+//     id: 2,
+//     name: 'Shrek 2',
+//     genre: 'Horror',
+//     startDate: '2022-04-07',
+//     endDate: '2022-04-31'
+//   },
+//   {
+//     id: 3,
+//     name: 'Shrek 3',
+//     genre: 'Horror',
+//     startDate: '2022-04-07',
+//     endDate: '2022-04-31'
+//   },
+//   {
+//     id: 4,
+//     name: 'Shrek 4',
+//     genre: 'Horror',
+//     startDate: '2022-04-07',
+//     endDate: '2022-04-31'
+//   },
+//   {
+//     id: 5,
+//     name: 'Shrek 5',
+//     genre: 'Horror',
+//     startDate: '2022-04-07',
+//     endDate: '2022-04-31'
+//   },
+//   {
+//     id: 6,
+//     name: 'Shrek 6',
+//     genre: 'Horror',
+//     startDate: '2022-04-07',
+//     endDate: '2022-04-31'
+//   },
+//   {
+//     id: 7,
+//     name: 'Shrek 7',
+//     genre: 'Horror',
+//     startDate: '2022-04-07',
+//     endDate: '2022-04-31'
+//   },
+//   {
+//     id: 8,
+//     name: 'Shrek 8',
+//     genre: 'Horror',
+//     startDate: '2022-04-07',
+//     endDate: '2022-04-31'
+//   },
+//   {
+//     id: 9,
+//     name: 'Shrek 9',
+//     genre: 'Horror',
+//     startDate: '2022-04-07',
+//     endDate: '2022-04-31'
+//   }
+// ];
+
+function createData(id, title, genre, startDate, endDate) {
+  return { id, title, genre, startDate, endDate };
+}
 
 export default function MovieList() {
   const [movies, setMovies] = useState([]);
@@ -180,12 +185,20 @@ export default function MovieList() {
 
   useEffect(() => {
     //api call
-    setMovies(data);
+    managerServices.getMovies().then((res) => {
+      const movieList = res.data;
+      setMovies(
+        movieList.map((movie) =>
+          createData(movie.id, movie.title, movie.genre, movie.start_date, movie.end_date)
+        )
+      );
+    });
+    // setMovies(data);
   }, []);
 
   const removeMovie = () => {
     //api call
-    alert(selectedId + ' pašalintas');
+    managerServices.removeMovie(selectedId).then((res) => console.log(res));
     window.location.reload(false);
     setSelectedId(-1);
     setOpen(false);
@@ -252,16 +265,20 @@ export default function MovieList() {
             ).map((movie) => (
               <TableRow key={movie.id}>
                 <TableCell component="th" scope="row">
-                  <Typography component="div">{movie.name}</Typography>
+                  <Typography component="div">{movie.title}</Typography>
                 </TableCell>
                 <TableCell align="right">
                   <Typography component="div">{movie.genre}</Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography component="div">{movie.startDate}</Typography>
+                  <Typography component="div">
+                    {new Date(movie.startDate).toLocaleDateString()}
+                  </Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography component="div">{movie.endDate}</Typography>
+                  <Typography component="div">
+                    {new Date(movie.endDate).toLocaleDateString()}
+                  </Typography>
                 </TableCell>
                 <TableCell align="right">
                   <IconButton

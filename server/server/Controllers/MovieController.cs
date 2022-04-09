@@ -7,6 +7,7 @@ using server.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace server.Controllers
         public JsonResult Get()
         {
             string query = @"
-                SELECT * FROM movie
+                SELECT movie.id, movie.title, genre.name AS genre, movie.start_date, movie.end_date FROM movie INNER JOIN genre ON movie.genre_fk = genre.id
             ";
 
             DataTable table = new DataTable();
@@ -71,8 +72,8 @@ namespace server.Controllers
                     myCommand.Parameters.AddWithValue("@description", movie.Description);
                     myCommand.Parameters.AddWithValue("@genre_fk", movie.Genre_fk);
                     myCommand.Parameters.AddWithValue("@duration", movie.Duration);
-                    myCommand.Parameters.AddWithValue("@start_date", movie.StartDate);
-                    myCommand.Parameters.AddWithValue("@end_date", movie.EndDate);
+                    myCommand.Parameters.AddWithValue("@start_date", movie.Start_Date);
+                    myCommand.Parameters.AddWithValue("@end_date", movie.End_Date);
                     myCommand.Parameters.AddWithValue("@price", movie.Price);
                     myCommand.Parameters.AddWithValue("@icon", movie.Icon);
 
@@ -116,8 +117,8 @@ namespace server.Controllers
                     myCommand.Parameters.AddWithValue("@description", movie.Description);
                     myCommand.Parameters.AddWithValue("@genre_fk", movie.Genre_fk);
                     myCommand.Parameters.AddWithValue("@duration", movie.Duration);
-                    myCommand.Parameters.AddWithValue("@start_date", movie.StartDate);
-                    myCommand.Parameters.AddWithValue("@end_date", movie.EndDate);
+                    myCommand.Parameters.AddWithValue("@start_date", movie.Start_Date);
+                    myCommand.Parameters.AddWithValue("@end_date", movie.End_Date);
                     myCommand.Parameters.AddWithValue("@price", movie.Price);
                     myCommand.Parameters.AddWithValue("@icon", movie.Icon);
 

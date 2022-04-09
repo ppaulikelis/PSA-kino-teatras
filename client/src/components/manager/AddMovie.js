@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import InsertPhotoRoundedIcon from '@mui/icons-material/InsertPhotoRounded';
+import managerServices from '../../services/manager/manager.services';
 
 const data = [
   {
@@ -43,16 +44,17 @@ export default function AddMovie() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      describtion: data.get('describtion'),
-      genre: currentGenre,
-      price: data.get('price'),
+    const movie = {
+      title: data.get('title'),
+      description: data.get('description'),
+      genre_fk: currentGenre,
       duration: data.get('duration'),
-      startDate: data.get('start-date'),
-      endDate: data.get('end-date'),
-      photo: photo
-    });
+      start_date: data.get('start-date'),
+      end_date: data.get('end-date'),
+      price: data.get('price'),
+      icon: 'photo'
+    };
+    managerServices.addMovie(movie).then((res) => console.log(res));
   };
 
   useEffect(() => {
@@ -71,8 +73,8 @@ export default function AddMovie() {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  id="name"
-                  name="name"
+                  id="title"
+                  name="title"
                   label="Pavadinimas"
                   variant="outlined"
                   fullWidth
@@ -82,8 +84,8 @@ export default function AddMovie() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  id="describtion"
-                  name="describtion"
+                  id="description"
+                  name="description"
                   label="Aprašymas"
                   variant="outlined"
                   fullWidth

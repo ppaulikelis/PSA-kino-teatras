@@ -12,8 +12,8 @@ namespace server.Models
         public string Description { get; set; }
         public int Genre_fk { get; set; }
         public int Duration { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime Start_Date { get; set; }
+        public DateTime End_Date { get; set; }
         public float Price { get; set; }
         public string Icon { get; set; }
 

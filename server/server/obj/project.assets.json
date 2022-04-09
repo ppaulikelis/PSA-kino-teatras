@@ -1064,19 +1064,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\gytis\\.nuget\\packages\\": {}
+    "C:\\Users\\Paulius Petrauskas\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\gytis\\Desktop\\PSA-kino-teatras\\server\\server\\server.csproj",
+      "projectUniqueName": "C:\\Users\\Paulius Petrauskas\\Repositories\\University\\PSA\\Kino teatro projektas\\server\\server\\server.csproj",
       "projectName": "server",
-      "projectPath": "C:\\Users\\gytis\\Desktop\\PSA-kino-teatras\\server\\server\\server.csproj",
-      "packagesPath": "C:\\Users\\gytis\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\gytis\\Desktop\\PSA-kino-teatras\\server\\server\\obj\\",
+      "projectPath": "C:\\Users\\Paulius Petrauskas\\Repositories\\University\\PSA\\Kino teatro projektas\\server\\server\\server.csproj",
+      "packagesPath": "C:\\Users\\Paulius Petrauskas\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Paulius Petrauskas\\Repositories\\University\\PSA\\Kino teatro projektas\\server\\server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\gytis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Paulius Petrauskas\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
