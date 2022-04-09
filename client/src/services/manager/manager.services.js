@@ -12,5 +12,11 @@ class MovieService {
   removeMovie(id) {
     return axios.delete(API_URL + '/' + id);
   }
+  getMovie(id) {
+    return axios.get(API_URL + '/' + id);
+  }
+  updateMovie(data) {
+    return axios.put(API_URL, data);
+  }
 }
 export default new MovieService();

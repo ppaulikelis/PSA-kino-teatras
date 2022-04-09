@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import managerServices from '../../services/manager/manager.services';
 
 const data = [
   {
@@ -27,19 +28,18 @@ const data = [
   }
 ];
 
-const movieData = {
-  name: 'Guardians of the galaxy',
-  describtion: 'Filmas apie herojus',
-  genre: 1,
-  price: 10,
-  duration: 120,
-  startDate: '2022-04-01',
-  endDate: '2022-04-30',
-  photo: 'https://qph.cf2.quoracdn.net/main-qimg-1f7d7ca14a61615a35d0f0ecf1522a65.webp'
-};
-
-function createData(id, name, describtion, genre, price, duration, startDate, endDate, photo) {
-  return { id, name, describtion, genre, price, duration, startDate, endDate, photo };
+function createData(
+  id,
+  title,
+  description,
+  genre_fk,
+  price,
+  duration,
+  start_date,
+  end_date,
+  photo
+) {
+  return { id, title, description, genre_fk, price, duration, start_date, end_date, photo };
 }
 
 export default function EditMovie() {
@@ -57,15 +57,20 @@ export default function EditMovie() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      describtion: data.get('describtion'),
-      genre: data.get('genre'),
-      price: data.get('price'),
+    const movie = {
+      id: id,
+      title: data.get('title'),
+      description: data.get('description'),
+      genre_fk: data.get('genre_fk'),
       duration: data.get('duration'),
-      startDate: data.get('start-date'),
-      endDate: data.get('end-date'),
-      photo: photo
+      start_date: data.get('start_date'),
+      end_date: data.get('end_date'),
+      price: data.get('price'),
+      icon: 'photo'
+    };
+    console.log(movie);
+    managerServices.updateMovie(movie).then((res) => {
+      console.log(res);
     });
   };
 
@@ -73,20 +78,23 @@ export default function EditMovie() {
     //api call
     setGenres(data);
     //api call
-    setCurrentMovie(
-      createData(
-        id,
-        movieData.name,
-        movieData.describtion,
-        movieData.genre,
-        movieData.price,
-        movieData.duration,
-        movieData.startDate,
-        movieData.endDate,
-        movieData.photo
-      )
-    );
-    console.log(id);
+    managerServices.getMovie(id).then((res) => {
+      const movie = res.data[0];
+      console.log(movie);
+      setCurrentMovie(
+        createData(
+          id,
+          movie.title,
+          movie.description,
+          movie.genre_fk,
+          movie.price,
+          movie.duration,
+          movie.start_date,
+          movie.end_date,
+          movie.photo
+        )
+      );
+    });
   }, []);
 
   return (
@@ -100,32 +108,32 @@ export default function EditMovie() {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  id="name"
-                  name="name"
+                  id="title"
+                  name="title"
                   label="Pavadinimas"
                   variant="outlined"
                   fullWidth
                   required
                   autoFocus
-                  value={currentMovie.name}
+                  value={currentMovie.title}
                   onChange={(event) =>
-                    setCurrentMovie({ ...currentMovie, name: event.target.value })
+                    setCurrentMovie({ ...currentMovie, title: event.target.value })
                   }
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  id="describtion"
-                  name="describtion"
+                  id="description"
+                  name="description"
                   label="Aprašymas"
                   variant="outlined"
                   fullWidth
                   multiline
                   rows={4}
                   required
-                  value={currentMovie.describtion}
+                  value={currentMovie.description}
                   onChange={(event) =>
-                    setCurrentMovie({ ...currentMovie, describtion: event.target.value })
+                    setCurrentMovie({ ...currentMovie, description: event.target.value })
                   }
                 />
               </Grid>
@@ -134,13 +142,13 @@ export default function EditMovie() {
                   <InputLabel id="genre-label">Žanras</InputLabel>
                   <Select
                     labelId="genre-label"
-                    id="genre"
-                    name="genre"
+                    id="genre_fk"
+                    name="genre_fk"
                     label="Žanras"
                     required
-                    value={currentMovie.genre}
+                    value={currentMovie.genre_fk}
                     onChange={(event) =>
-                      setCurrentMovie({ ...currentMovie, genre: event.target.value })
+                      setCurrentMovie({ ...currentMovie, genre_fk: event.target.value })
                     }>
                     {genres.map((genre) => (
                       <MenuItem key={genre.id} value={genre.id}>
@@ -185,15 +193,15 @@ export default function EditMovie() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  id="start-date"
-                  name="start-date"
+                  id="start_date"
+                  name="start_date"
                   label="Pradžios data"
                   type="date"
                   fullWidth
                   required
-                  value={currentMovie.startDate}
+                  value={currentMovie.start_date.split('T')[0]}
                   onChange={(event) =>
-                    setCurrentMovie({ ...currentMovie, startDate: event.target.value })
+                    setCurrentMovie({ ...currentMovie, start_date: event.target.value })
                   }
                   InputLabelProps={{
                     shrink: true
@@ -202,15 +210,15 @@ export default function EditMovie() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  id="end-date"
-                  name="end-date"
+                  id="end_date"
+                  name="end_date"
                   label="Pabaigos data"
                   type="date"
                   fullWidth
                   required
-                  value={currentMovie.endDate}
+                  value={currentMovie.end_date.split('T')[0]}
                   onChange={(event) =>
-                    setCurrentMovie({ ...currentMovie, endDate: event.target.value })
+                    setCurrentMovie({ ...currentMovie, end_date: event.target.value })
                   }
                   InputLabelProps={{
                     shrink: true
@@ -235,6 +243,7 @@ export default function EditMovie() {
                   onChange={handlePhotoChange}
                 />
               </Grid>
+              {photo ? <></> : <></>}
               <Grid item xs={12}>
                 <img src={currentMovie.photo} width="100%" />
               </Grid>

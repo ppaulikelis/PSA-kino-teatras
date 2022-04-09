@@ -87,72 +87,6 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired
 };
 
-// const data = [
-//   {
-//     id: 1,
-//     name: 'Shrek 1',
-//     genre: 'Horror',
-//     startDate: '2022-04-07',
-//     endDate: '2022-04-31'
-//   },
-//   {
-//     id: 2,
-//     name: 'Shrek 2',
-//     genre: 'Horror',
-//     startDate: '2022-04-07',
-//     endDate: '2022-04-31'
-//   },
-//   {
-//     id: 3,
-//     name: 'Shrek 3',
-//     genre: 'Horror',
-//     startDate: '2022-04-07',
-//     endDate: '2022-04-31'
-//   },
-//   {
-//     id: 4,
-//     name: 'Shrek 4',
-//     genre: 'Horror',
-//     startDate: '2022-04-07',
-//     endDate: '2022-04-31'
-//   },
-//   {
-//     id: 5,
-//     name: 'Shrek 5',
-//     genre: 'Horror',
-//     startDate: '2022-04-07',
-//     endDate: '2022-04-31'
-//   },
-//   {
-//     id: 6,
-//     name: 'Shrek 6',
-//     genre: 'Horror',
-//     startDate: '2022-04-07',
-//     endDate: '2022-04-31'
-//   },
-//   {
-//     id: 7,
-//     name: 'Shrek 7',
-//     genre: 'Horror',
-//     startDate: '2022-04-07',
-//     endDate: '2022-04-31'
-//   },
-//   {
-//     id: 8,
-//     name: 'Shrek 8',
-//     genre: 'Horror',
-//     startDate: '2022-04-07',
-//     endDate: '2022-04-31'
-//   },
-//   {
-//     id: 9,
-//     name: 'Shrek 9',
-//     genre: 'Horror',
-//     startDate: '2022-04-07',
-//     endDate: '2022-04-31'
-//   }
-// ];
-
 function createData(id, title, genre, startDate, endDate) {
   return { id, title, genre, startDate, endDate };
 }
@@ -193,7 +127,6 @@ export default function MovieList() {
         )
       );
     });
-    // setMovies(data);
   }, []);
 
   const removeMovie = () => {
