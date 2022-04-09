@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Paulius Petrauskas\\Repositories\\University\\PSA\\Kino teatro projektas\\server\\server\\server.csproj": {}
+    "C:\\Users\\gytis\\Desktop\\PSA-kino-teatras\\server\\server\\server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Paulius Petrauskas\\Repositories\\University\\PSA\\Kino teatro projektas\\server\\server\\server.csproj": {
+    "C:\\Users\\gytis\\Desktop\\PSA-kino-teatras\\server\\server\\server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Paulius Petrauskas\\Repositories\\University\\PSA\\Kino teatro projektas\\server\\server\\server.csproj",
+        "projectUniqueName": "C:\\Users\\gytis\\Desktop\\PSA-kino-teatras\\server\\server\\server.csproj",
         "projectName": "server",
-        "projectPath": "C:\\Users\\Paulius Petrauskas\\Repositories\\University\\PSA\\Kino teatro projektas\\server\\server\\server.csproj",
-        "packagesPath": "C:\\Users\\Paulius Petrauskas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Paulius Petrauskas\\Repositories\\University\\PSA\\Kino teatro projektas\\server\\server\\obj\\",
+        "projectPath": "C:\\Users\\gytis\\Desktop\\PSA-kino-teatras\\server\\server\\server.csproj",
+        "packagesPath": "C:\\Users\\gytis\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\gytis\\Desktop\\PSA-kino-teatras\\server\\server\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Paulius Petrauskas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\gytis\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -43,6 +43,10 @@
             "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
               "target": "Package",
               "version": "[3.1.16, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.0.28, )"
             }
           },
           "imports": [
