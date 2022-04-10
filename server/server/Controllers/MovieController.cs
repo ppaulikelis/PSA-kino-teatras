@@ -80,7 +80,7 @@ namespace server.Controllers
         }
 
         [HttpPost]
-        public JsonResult Post(Movie movie)
+        public JsonResult Add(Movie movie)
         {
             string query = @"
                 INSERT INTO movie (id,title,description,genre_fk,duration,start_date,end_date,price,icon) VALUES 
@@ -116,7 +116,7 @@ namespace server.Controllers
         }
 
         [HttpPut]
-        public JsonResult Put(Movie movie)
+        public JsonResult Edit(Movie movie)
         {
             string query = @"
                 UPDATE movie SET 

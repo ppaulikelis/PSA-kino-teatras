@@ -31,7 +31,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import PropTypes from 'prop-types';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import managerServices from '../../services/manager/manager.services';
+import managerServices from '../services/manager/manager.services';
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -131,8 +131,11 @@ export default function MovieList() {
 
   const removeMovie = () => {
     //api call
-    managerServices.removeMovie(selectedId).then((res) => console.log(res));
-    window.location.reload(false);
+    managerServices.removeMovie(selectedId).then((res) => {
+      alert(res.data);
+      navigate(0);
+    });
+    //window.location.reload(false);
     setSelectedId(-1);
     setOpen(false);
   };
@@ -144,28 +147,30 @@ export default function MovieList() {
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description">
-        <DialogTitle id="alert-dialog-title">{'Ar tikrai norite pašalinti filmą?'}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          {'Are you sure you want to delete this movie?'}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Filmas bus pašalintas visam laikui
+            Movie will be deleted permamently
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button color="primary" onClick={handleClose}>
-            Atšaukti
+            Cancel
           </Button>
           <Button color="error" autoFocus onClick={removeMovie}>
-            Pašalinti
+            Delete
           </Button>
         </DialogActions>
       </Dialog>
       <Typography variant="h4" component="div" mb={3} align="center">
-        Filmų sąrašas
+        Movie list
       </Typography>
       <TextField
         id="search"
         name="search"
-        label="Ieškoti"
+        label="Search"
         fullWidth
         sx={{ mb: 2 }}
         InputProps={{
@@ -177,16 +182,16 @@ export default function MovieList() {
           <TableHead>
             <TableRow>
               <TableCell>
-                <Typography component="div">Pavadinimas</Typography>
+                <Typography component="div">Title</Typography>
               </TableCell>
               <TableCell align="right">
-                <Typography component="div">Žanras</Typography>
+                <Typography component="div">Genre</Typography>
               </TableCell>
               <TableCell align="right">
-                <Typography component="div">Pradžios data</Typography>
+                <Typography component="div">Start end_date</Typography>
               </TableCell>
               <TableCell align="right">
-                <Typography component="div">Pabaigos data</Typography>
+                <Typography component="div">End date</Typography>
               </TableCell>
               <TableCell align="right"></TableCell>
             </TableRow>
@@ -233,7 +238,7 @@ export default function MovieList() {
           <TableFooter>
             <TableRow>
               <TablePagination
-                labelRowsPerPage="Eilutės puslapyje"
+                labelRowsPerPage="Rows per page"
                 rowsPerPageOptions={[5, 10, 25, { label: 'Visos', value: -1 }]}
                 colSpan={3}
                 count={movies.length}
@@ -260,7 +265,7 @@ export default function MovieList() {
           variant="contained"
           onClick={() => navigate('movies/addmovie')}
           sx={{ marginLeft: 'auto' }}>
-          Pridėti
+          Add
         </Button>
       </Box>
     </Box>

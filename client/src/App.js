@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ManagerDashboard from './components/manager/ManagerDashboard';
+import ManagerDashboard from './views/ManagerDashboard';
 import CssBaseline from '@mui/material/CssBaseline';
 
 function App() {
