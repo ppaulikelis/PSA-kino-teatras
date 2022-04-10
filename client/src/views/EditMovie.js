@@ -100,7 +100,7 @@ export default function EditMovie() {
       start_date: data.get('start_date'),
       end_date: data.get('end_date'),
       price: data.get('price'),
-      icon: 'photo'
+      icon: currentMovie.icon
     };
     console.log(movie);
     managerServices.updateMovie(movie).then((res) => {
@@ -126,7 +126,7 @@ export default function EditMovie() {
           movie.duration,
           movie.start_date,
           movie.end_date,
-          movie.photo
+          movie.icon
         )
       );
     });
@@ -278,10 +278,15 @@ export default function EditMovie() {
                   onChange={handlePhotoChange}
                 />
               </Grid>
-              {photo ? <></> : <></>}
-              <Grid item xs={12}>
-                <img src={currentMovie.photo} width="100%" />
-              </Grid>
+              {photo ? (
+                <Grid item xs={12}>
+                  <img src={photo} width="100%" />
+                </Grid>
+              ) : (
+                <Grid item xs={12}>
+                  <img src={'http://localhost:6310/Photos/' + currentMovie.photo} width="100%" />
+                </Grid>
+              )}
             </Grid>
           </Box>
         </Box>

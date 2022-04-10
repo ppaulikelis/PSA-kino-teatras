@@ -12,7 +12,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import InsertPhotoRoundedIcon from '@mui/icons-material/InsertPhotoRounded';
 import managerServices from '../services/manager/manager.services';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 
 const data = [
   {
@@ -65,7 +65,7 @@ export default function AddMovie() {
   const [genres, setGenres] = useState([]);
   const [currentGenre, setCurrentGenre] = useState('');
   const [photo, setPhoto] = useState('');
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const handleGenreChange = (event) => {
     setCurrentGenre(event.target.value);
@@ -77,6 +77,9 @@ export default function AddMovie() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    //managerServices.savePhoto(formData).then((res) => {
+    //  console.log(res.data);
+    //});
     const data = new FormData(event.currentTarget);
     const movie = {
       title: data.get('title'),
@@ -88,9 +91,13 @@ export default function AddMovie() {
       price: data.get('price'),
       icon: 'photo'
     };
-    managerServices.addMovie(movie).then((res) => {
+
+    const formData = new FormData();
+    formData.append('file', JSON.stringify(movie));
+    formData.append('file', photo);
+    managerServices.addMovie(formData).then((res) => {
       alert(res.data);
-      navigate('/manager');
+      //navigate('/manager');
     });
   };
 
@@ -102,7 +109,7 @@ export default function AddMovie() {
   return (
     <Box>
       <Typography variant="h4" component="div" mb={3} align="center">
-        Pridėti filmą
+        Add movie
       </Typography>
       <Box component="form" onSubmit={handleSubmit}>
         <Box display="flex" flexDirection={{ md: 'row', sm: 'column', xs: 'column' }}>
@@ -231,7 +238,7 @@ export default function AddMovie() {
         <br />
         <Box display={'flex'}>
           <Button type="submit" color="primary" variant="contained" sx={{ marginLeft: 'auto' }}>
-            Pridėti
+            Add
           </Button>
         </Box>
       </Box>

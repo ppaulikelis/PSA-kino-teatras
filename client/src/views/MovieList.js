@@ -21,7 +21,7 @@ import {
   TableFooter,
   TableHead,
   TablePagination,
-  TextField,
+  //TextField,
   Typography
 } from '@mui/material';
 import { useTheme } from '@emotion/react';
@@ -30,7 +30,7 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import PropTypes from 'prop-types';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+//import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import managerServices from '../services/manager/manager.services';
 
 function TablePaginationActions(props) {
@@ -167,7 +167,7 @@ export default function MovieList() {
       <Typography variant="h4" component="div" mb={3} align="center">
         Movie list
       </Typography>
-      <TextField
+      {/* <TextField
         id="search"
         name="search"
         label="Search"
@@ -176,7 +176,7 @@ export default function MovieList() {
         InputProps={{
           endAdornment: <SearchRoundedIcon />
         }}
-      />
+      /> */}
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>

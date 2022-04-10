@@ -18,5 +18,8 @@ class MovieService {
   updateMovie(data) {
     return axios.put(API_URL, data);
   }
+  savePhoto(formData, id) {
+    return axios.post(API_URL + '/savefile', formData, id);
+  }
 }
 export default new MovieService();

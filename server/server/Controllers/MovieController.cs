@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using server.Models;
 using System;
 using System.Collections.Generic;
@@ -80,12 +81,21 @@ namespace server.Controllers
         }
 
         [HttpPost]
-        public JsonResult Add(Movie movie)
+        public JsonResult Add([FromForm] IFormFile file)
         {
+            Movie movie = new Movie();
+            foreach (var key in HttpContext.Request.Form.Keys)
+            {
+                var val = HttpContext.Request.Form[key];
+                movie = JsonConvert.DeserializeObject<Movie>(val);
+            }
+            string icon = SaveFile(file);
+
             string query = @"
                 INSERT INTO movie (id,title,description,genre_fk,duration,start_date,end_date,price,icon) VALUES 
                     (NULL,@title,@description,@genre_fk,@duration,@start_date,@end_date,@price,@icon)
             ";
+            //long id = -1;
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
@@ -102,10 +112,11 @@ namespace server.Controllers
                     myCommand.Parameters.AddWithValue("@start_date", movie.Start_Date);
                     myCommand.Parameters.AddWithValue("@end_date", movie.End_Date);
                     myCommand.Parameters.AddWithValue("@price", movie.Price);
-                    myCommand.Parameters.AddWithValue("@icon", movie.Icon);
+                    myCommand.Parameters.AddWithValue("@icon", icon);
 
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
+                    //id = myCommand.LastInsertedId;
 
                     myReader.Close();
                     mycon.Close();
@@ -190,12 +201,11 @@ namespace server.Controllers
 
         [Route("SaveFile")]
         [HttpPost]
-        public JsonResult SaveFile()
+        public string SaveFile(IFormFile file)
         {
             try
             {
-                var httpRequest = Request.Form;
-                var postedFile = httpRequest.Files[0];
+                var postedFile = file;
                 long filename = (long)(DateTime.Now - new DateTime(1970, 1, 1)).TotalMilliseconds;
                 var physicalPath = _env.ContentRootPath + "/Photos/" + filename + ".jpg";
 
@@ -204,11 +214,11 @@ namespace server.Controllers
                     postedFile.CopyTo(stream);
                 }
 
-                return new JsonResult(filename);
+                return filename + ".jpg";
             }
             catch(Exception)
             {
-                return new JsonResult("default.jpg");
+                return "default.jpg";
             }
         }
     }
