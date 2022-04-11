@@ -85,7 +85,7 @@ export default function EditMovie() {
   const handlePhotoChange = (event) => {
     let url = URL.createObjectURL(event.target.files[0]);
     setPhoto(url);
-    console.log(url);
+    console.log(event.target.value);
   };
 
   const handleSubmit = (event) => {
@@ -100,7 +100,7 @@ export default function EditMovie() {
       start_date: data.get('start_date'),
       end_date: data.get('end_date'),
       price: data.get('price'),
-      icon: currentMovie.icon
+      icon: currentMovie.photo
     };
     console.log(movie);
     managerServices.updateMovie(movie).then((res) => {

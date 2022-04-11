@@ -15,35 +15,35 @@ import { useNavigate } from 'react-router-dom';
 
 const pages = [
   {
-    name: 'Filmai',
+    name: 'Movies',
     url: '/manager'
   },
   {
-    name: 'Seansai',
+    name: 'Sessions',
     url: '/manager/sessions'
   },
   {
-    name: 'Kino teatrai',
+    name: 'Movie theatres',
     url: '/manager/theaters'
   },
   {
-    name: 'Sėdimos vietos',
+    name: 'Seats',
     url: '/manager/seats'
   },
   {
-    name: 'Užkandžiai',
+    name: 'Snacks',
     url: '/manager/snacks'
   },
   {
-    name: 'Klientai',
+    name: 'Clients',
     url: '/manager/clients'
   },
   {
-    name: 'Rinkimai',
+    name: 'Voting',
     url: '/manager/elections'
   }
 ];
-const settings = ['Paskyra', 'Atsijungti'];
+const settings = ['Account', 'Log out'];
 
 const ManagerAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -74,7 +74,7 @@ const ManagerAppBar = () => {
             noWrap
             component="div"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}>
-            KINO TEATRAS
+            MOVIE THEATRE SYSTEM
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

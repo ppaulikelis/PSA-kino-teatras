@@ -12,7 +12,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import InsertPhotoRoundedIcon from '@mui/icons-material/InsertPhotoRounded';
 import managerServices from '../services/manager/manager.services';
-//import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const data = [
   {
@@ -65,7 +65,7 @@ export default function AddMovie() {
   const [genres, setGenres] = useState([]);
   const [currentGenre, setCurrentGenre] = useState('');
   const [photo, setPhoto] = useState('');
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleGenreChange = (event) => {
     setCurrentGenre(event.target.value);
@@ -77,9 +77,6 @@ export default function AddMovie() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    //managerServices.savePhoto(formData).then((res) => {
-    //  console.log(res.data);
-    //});
     const data = new FormData(event.currentTarget);
     const movie = {
       title: data.get('title'),
@@ -97,7 +94,7 @@ export default function AddMovie() {
     formData.append('file', photo);
     managerServices.addMovie(formData).then((res) => {
       alert(res.data);
-      //navigate('/manager');
+      navigate('/manager');
     });
   };
 
@@ -175,7 +172,7 @@ export default function AddMovie() {
                   type="number"
                   fullWidth
                   required
-                  inputProps={{ min: 10, max: 300, step: 10 }}
+                  inputProps={{ min: 10, max: 300, step: 1 }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>

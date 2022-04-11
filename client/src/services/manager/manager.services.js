@@ -6,8 +6,8 @@ class MovieService {
   getMovies() {
     return axios.get(API_URL);
   }
-  addMovie(data) {
-    return axios.post(API_URL, data);
+  addMovie(formData) {
+    return axios.post(API_URL, formData);
   }
   removeMovie(id) {
     return axios.delete(API_URL + '/' + id);
@@ -17,9 +17,6 @@ class MovieService {
   }
   updateMovie(data) {
     return axios.put(API_URL, data);
-  }
-  savePhoto(formData, id) {
-    return axios.post(API_URL + '/savefile', formData, id);
   }
 }
 export default new MovieService();
