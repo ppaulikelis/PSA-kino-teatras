@@ -79,14 +79,14 @@ export default function AddMovie() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const movie = {
-      title: data.get('title'),
-      description: data.get('description'),
-      genre_fk: currentGenre,
-      duration: data.get('duration'),
-      start_date: data.get('start-date'),
-      end_date: data.get('end-date'),
-      price: data.get('price'),
-      icon: 'photo'
+      Title: data.get('title'),
+      Description: data.get('description'),
+      Genre: currentGenre,
+      Duration: data.get('duration'),
+      StartDate: data.get('start-date'),
+      EndDate: data.get('end-date'),
+      Price: data.get('price'),
+      Icon: 'default.jpg'
     };
 
     const formData = new FormData();

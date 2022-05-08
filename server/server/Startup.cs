@@ -13,6 +13,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using server.Database;
+using Microsoft.EntityFrameworkCore;
+using MySql.EntityFrameworkCore.Extensions;
 
 namespace server
 {
@@ -42,6 +45,11 @@ namespace server
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
                 .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver
                 = new DefaultContractResolver());
+
+            services.AddDbContext<DatabaseContext>(options =>
+            {
+                options.UseMySQL("server=localhost;port=3306;database=psa_kino_teatras;user=root;password=;");
+            });
 
             services.AddControllers();
         }

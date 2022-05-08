@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using MySql.Data.MySqlClient;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using server.Models;
 using System;
@@ -12,6 +12,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using server.Database;
 
 namespace server.Controllers
 {
@@ -21,67 +22,29 @@ namespace server.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _env;
-        public MovieController(IConfiguration configuration, IWebHostEnvironment env)
+        private readonly DatabaseContext _context;
+
+        public MovieController(IConfiguration configuration, IWebHostEnvironment env, DatabaseContext context)
         {
             _configuration = configuration;
             _env = env;
+            _context = context;
         }
 
         [HttpGet]
-        public JsonResult Get()
+        public async Task<ActionResult<IEnumerable<Movie>>> Get()
         {
-            string query = @"
-                SELECT movie.id, movie.title, genre.name AS genre, movie.start_date, movie.end_date FROM movie INNER JOIN genre ON movie.genre_fk = genre.id
-            ";
-
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
-            MySqlDataReader myReader;
-            using(MySqlConnection mycon=new MySqlConnection(sqlDataSource))
-            {
-                mycon.Open();
-                using(MySqlCommand myCommand=new MySqlCommand(query, mycon))
-                {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-
-                    myReader.Close();
-                    mycon.Close();
-                }
-            }
-
-            return new JsonResult(table);
+            return await _context.Movies.ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public JsonResult GetById(int id)
+        public async Task<ActionResult<IEnumerable<Movie>>> GetById(int id)
         {
-            string query = @"
-                SELECT * FROM movie WHERE id = @id
-            ";
-
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
-            MySqlDataReader myReader;
-            using (MySqlConnection mycon = new MySqlConnection(sqlDataSource))
-            {
-                mycon.Open();
-                using (MySqlCommand myCommand = new MySqlCommand(query, mycon))
-                {
-                    myCommand.Parameters.AddWithValue("@id", id);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-
-                    myReader.Close();
-                    mycon.Close();
-                }
-            }
-
-            return new JsonResult(table);
+            return await _context.Movies.Where(m => m.Id == id).ToListAsync();
         }
 
         [HttpPost]
-        public JsonResult Add([FromForm] IFormFile file)
+        public async Task<ActionResult<Movie>> Add([FromForm] IFormFile file) 
         {
             Movie movie = new Movie();
             foreach (var key in HttpContext.Request.Form.Keys)
@@ -91,132 +54,79 @@ namespace server.Controllers
             }
             string icon = SaveFile(file);
 
-            string query = @"
-                INSERT INTO movie (id,title,description,genre_fk,duration,start_date,end_date,price,icon) VALUES 
-                    (NULL,@title,@description,@genre_fk,@duration,@start_date,@end_date,@price,@icon)
-            ";
-            //long id = -1;
-
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
-            MySqlDataReader myReader;
-            using (MySqlConnection mycon = new MySqlConnection(sqlDataSource))
-            {
-                mycon.Open();
-                using (MySqlCommand myCommand = new MySqlCommand(query, mycon))
-                {
-                    myCommand.Parameters.AddWithValue("@title", movie.Title);
-                    myCommand.Parameters.AddWithValue("@description", movie.Description);
-                    myCommand.Parameters.AddWithValue("@genre_fk", movie.Genre_fk);
-                    myCommand.Parameters.AddWithValue("@duration", movie.Duration);
-                    myCommand.Parameters.AddWithValue("@start_date", movie.Start_Date);
-                    myCommand.Parameters.AddWithValue("@end_date", movie.End_Date);
-                    myCommand.Parameters.AddWithValue("@price", movie.Price);
-                    myCommand.Parameters.AddWithValue("@icon", icon);
-
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    //id = myCommand.LastInsertedId;
-
-                    myReader.Close();
-                    mycon.Close();
-                }
-            }
-
-            return new JsonResult("Added successfully");
+            var newMovie = new Movie() { Title = movie.Title, Description = movie.Description, Duration = movie.Duration, StartDate = movie.StartDate, EndDate = movie.EndDate, Price = movie.Price, Icon = icon, Genre = movie.Genre };
+            await _context.Movies.AddAsync(newMovie);
+            await _context.SaveChangesAsync();
+            return newMovie;
         }
 
         [HttpPut]
-        public JsonResult Edit(Movie movie)
+        public async Task<ActionResult<Movie>> Edit([FromForm] IFormFile file)
         {
-            string query = @"
-                UPDATE movie SET 
-                    title = @title,
-                    description = @description,
-                    genre_fk = @genre_fk,
-                    duration = @duration,
-                    start_date = @start_date,
-                    end_date = @end_date,
-                    price = @price,
-                    icon = @icon
-                    WHERE id = @id
-            ";
-
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
-            MySqlDataReader myReader;
-            using (MySqlConnection mycon = new MySqlConnection(sqlDataSource))
+            Movie movie = new Movie();
+            foreach (var key in HttpContext.Request.Form.Keys)
             {
-                mycon.Open();
-                using (MySqlCommand myCommand = new MySqlCommand(query, mycon))
-                {
-                    myCommand.Parameters.AddWithValue("@id", movie.Id);
-                    myCommand.Parameters.AddWithValue("@title", movie.Title);
-                    myCommand.Parameters.AddWithValue("@description", movie.Description);
-                    myCommand.Parameters.AddWithValue("@genre_fk", movie.Genre_fk);
-                    myCommand.Parameters.AddWithValue("@duration", movie.Duration);
-                    myCommand.Parameters.AddWithValue("@start_date", movie.Start_Date);
-                    myCommand.Parameters.AddWithValue("@end_date", movie.End_Date);
-                    myCommand.Parameters.AddWithValue("@price", movie.Price);
-                    myCommand.Parameters.AddWithValue("@icon", movie.Icon);
-
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-
-                    myReader.Close();
-                    mycon.Close();
-                }
+                var val = HttpContext.Request.Form[key];
+                movie = JsonConvert.DeserializeObject<Movie>(val);
             }
+            string icon = SaveFile(file, movie.Icon);
 
-            return new JsonResult("Updated successfully");
+            var movieToEdit = await _context.Movies.FirstOrDefaultAsync(mov => mov.Id == movie.Id);
+       
+            movieToEdit.Title = movie.Title;
+            movieToEdit.Description = movie.Description;
+            movieToEdit.Duration = movie.Duration;
+            movieToEdit.StartDate = movie.StartDate;
+            movieToEdit.EndDate = movie.EndDate;
+            movieToEdit.Price = movie.Price;
+            movieToEdit.Icon = icon;
+            movieToEdit.Genre = movie.Genre;
+
+            await _context.SaveChangesAsync();
+            return movieToEdit;
         }
 
         [HttpDelete("{id}")]
-        public JsonResult Delete(int id)
+        public async Task<ActionResult<bool>> Delete(int id)
         {
-            string query = @"
-                DELETE FROM movie WHERE id = @id
-            ";
-
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
-            MySqlDataReader myReader;
-            using (MySqlConnection mycon = new MySqlConnection(sqlDataSource))
-            {
-                mycon.Open();
-                using (MySqlCommand myCommand = new MySqlCommand(query, mycon))
-                {
-                    myCommand.Parameters.AddWithValue("@id", id);
-
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-
-                    myReader.Close();
-                    mycon.Close();
-                }
-            }
-
-            return new JsonResult("Deleted successfully");
+            var movie = await _context.Movies.FirstOrDefaultAsync(movie => movie.Id == id);
+            _context.Movies.Remove(movie);
+            await _context.SaveChangesAsync();
+            return true;
         }
+
 
         [Route("SaveFile")]
         [HttpPost]
-        public string SaveFile(IFormFile file)
+        public string SaveFile(IFormFile file, string oldfile=null)
         {
             try
             {
+                if(file == null)
+                {
+                    return oldfile;
+                }
                 var postedFile = file;
-                long filename = (long)(DateTime.Now - new DateTime(1970, 1, 1)).TotalMilliseconds;
-                var physicalPath = _env.ContentRootPath + "/Photos/" + filename + ".jpg";
-
-                using(var stream=new FileStream(physicalPath, FileMode.Create))
+                string physicalPath = "";
+                if(oldfile=="default.jpg") 
+                {
+                    long filename = (long)(DateTime.Now - new DateTime(1970, 1, 1)).TotalMilliseconds;
+                    physicalPath = _env.ContentRootPath + "/Photos/" + filename + ".jpg";
+                }
+                else
+                {
+                    physicalPath = _env.ContentRootPath + "/Photos/" + oldfile;
+                }
+                
+                using (var stream = new FileStream(physicalPath, FileMode.Create))
                 {
                     postedFile.CopyTo(stream);
                 }
 
-                return filename + ".jpg";
+                int pos = physicalPath.LastIndexOf("/") + 1;
+                return physicalPath.Substring(pos, physicalPath.Length - pos);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return "default.jpg";
             }

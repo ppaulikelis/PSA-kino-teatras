@@ -15,8 +15,8 @@ class MovieService {
   getMovie(id) {
     return axios.get(API_URL + '/' + id);
   }
-  updateMovie(data) {
-    return axios.put(API_URL, data);
+  updateMovie(formData) {
+    return axios.put(API_URL, formData);
   }
 }
 export default new MovieService();

@@ -123,7 +123,7 @@ export default function MovieList() {
       const movieList = res.data;
       setMovies(
         movieList.map((movie) =>
-          createData(movie.id, movie.title, movie.genre, movie.start_date, movie.end_date)
+          createData(movie.Id, movie.Title, movie.Genre, movie.StartDate, movie.EndDate)
         )
       );
     });

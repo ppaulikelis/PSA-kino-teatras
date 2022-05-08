@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 11, 2022 at 07:57 AM
+-- Generation Time: May 08, 2022 at 04:57 PM
 -- Server version: 5.7.36
 -- PHP Version: 7.4.26
 
@@ -24,15 +24,56 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `administrator`
+--
+
+DROP TABLE IF EXISTS `administrator`;
+CREATE TABLE IF NOT EXISTS `administrator` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chair_type`
+--
+
+DROP TABLE IF EXISTS `chair_type`;
+CREATE TABLE IF NOT EXISTS `chair_type` (
+  `title` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL,
+  `price` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `client`
+--
+
+DROP TABLE IF EXISTS `client`;
+CREATE TABLE IF NOT EXISTS `client` (
+  `watched_movie_count` int(11) NOT NULL,
+  `favourite_genre` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
+  KEY `favourite_genre` (`favourite_genre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `genre`
 --
 
 DROP TABLE IF EXISTS `genre`;
 CREATE TABLE IF NOT EXISTS `genre` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
+  `name` char(15) COLLATE utf8_lithuanian_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
 
 --
 -- Dumping data for table `genre`
@@ -54,43 +95,195 @@ INSERT INTO `genre` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `manager`
+--
+
+DROP TABLE IF EXISTS `manager`;
+CREATE TABLE IF NOT EXISTS `manager` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `movie`
 --
 
 DROP TABLE IF EXISTS `movie`;
 CREATE TABLE IF NOT EXISTS `movie` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(50) NOT NULL,
-  `description` varchar(500) NOT NULL,
-  `genre_fk` int(11) NOT NULL,
+  `title` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL,
   `duration` int(11) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `price` float NOT NULL,
-  `icon` varchar(500) NOT NULL,
+  `icon` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL,
+  `genre` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`),
-  KEY `genre_fk` (`genre_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
+  KEY `genre` (`genre`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `movie`
+-- Table structure for table `movie_hall`
 --
 
-INSERT INTO `movie` (`id`, `title`, `description`, `genre_fk`, `duration`, `start_date`, `end_date`, `price`, `icon`) VALUES
-(46, 'Shrek', 'Shrek is a 2001 American computer-animated comedy film loosely based on the 1990 fairy tale picture book of the same name by William Steig.', 1, 90, '2022-04-06', '2022-04-20', 9, '1649674033514.jpg'),
-(47, 'Interstellar', 'Earth\'s future has been riddled by disasters, famines, and droughts. There is only one way to ensure mankind\'s survival: Interstellar travel. A newly discovered wormhole in the far reaches of our solar system allows a team of astronauts to go where no man has gone before, a planet that may have the right environment to sustain human life.', 7, 169, '2022-04-05', '2022-04-26', 12, '1649674255187.jpg'),
-(48, 'The Shawshank Redemption', 'Chronicles the experiences of a formerly successful banker as a prisoner in the gloomy jailhouse of Shawshank after being found guilty of a crime he did not commit. The film portrays the man\'s unique way of dealing with his new, torturous life; along the way he befriends a number of fellow prisoners, most notably a wise long-term inmate named Red.', 3, 142, '2022-03-31', '2022-04-13', 7, '1649674375065.jpg'),
-(49, ' Spider-Man: No Way Home', 'Peter Parker\'s secret identity is revealed to the entire world. Desperate for help, Peter turns to Doctor Strange to make the world forget that he is Spider-Man. The spell goes horribly wrong and shatters the multiverse, bringing in monstrous villains that could destroy the world.', 11, 148, '2022-04-03', '2022-04-28', 10, '1649674492446.jpg');
+DROP TABLE IF EXISTS `movie_hall`;
+CREATE TABLE IF NOT EXISTS `movie_hall` (
+  `number` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fk_Movie_theatre_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_Movie_theatre_id` (`fk_Movie_theatre_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+
+-- --------------------------------------------------------
 
 --
--- Constraints for dumped tables
+-- Table structure for table `movie_theatre`
 --
 
+DROP TABLE IF EXISTS `movie_theatre`;
+CREATE TABLE IF NOT EXISTS `movie_theatre` (
+  `address` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+
+-- --------------------------------------------------------
+
 --
--- Constraints for table `movie`
+-- Table structure for table `order_table`
 --
-ALTER TABLE `movie`
-  ADD CONSTRAINT `genre_fk` FOREIGN KEY (`genre_fk`) REFERENCES `genre` (`id`);
+
+DROP TABLE IF EXISTS `order_table`;
+CREATE TABLE IF NOT EXISTS `order_table` (
+  `order_date` date NOT NULL,
+  `is_paid` tinyint(1) NOT NULL,
+  `answer_date` date NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fk_Client_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `creates` (`fk_Client_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `seat`
+--
+
+DROP TABLE IF EXISTS `seat`;
+CREATE TABLE IF NOT EXISTS `seat` (
+  `row` int(11) NOT NULL,
+  `number` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fk_Movie_hall_id` int(11) NOT NULL,
+  `fk_Chair_type_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`,`fk_Movie_hall_id`),
+  KEY `fk_Movie_hall_id` (`fk_Movie_hall_id`),
+  KEY `turi` (`fk_Chair_type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `session`
+--
+
+DROP TABLE IF EXISTS `session`;
+CREATE TABLE IF NOT EXISTS `session` (
+  `start_time` date NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fk_Movie_id` int(11) NOT NULL,
+  `fk_Movie_hall_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `is_shown` (`fk_Movie_id`),
+  KEY `has` (`fk_Movie_hall_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `size`
+--
+
+DROP TABLE IF EXISTS `size`;
+CREATE TABLE IF NOT EXISTS `size` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` char(6) COLLATE utf8_lithuanian_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+
+--
+-- Dumping data for table `size`
+--
+
+INSERT INTO `size` (`id`, `name`) VALUES
+(1, 'large'),
+(2, 'medium'),
+(3, 'small');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `snack`
+--
+
+DROP TABLE IF EXISTS `snack`;
+CREATE TABLE IF NOT EXISTS `snack` (
+  `title` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL,
+  `price` float NOT NULL,
+  `type` int(11) NOT NULL,
+  `size` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
+  KEY `type` (`type`),
+  KEY `size` (`size`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `snack_type`
+--
+
+DROP TABLE IF EXISTS `snack_type`;
+CREATE TABLE IF NOT EXISTS `snack_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` char(5) COLLATE utf8_lithuanian_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+
+--
+-- Dumping data for table `snack_type`
+--
+
+INSERT INTO `snack_type` (`id`, `name`) VALUES
+(1, 'Drink'),
+(2, 'Other'),
+(3, 'Sweet'),
+(4, 'Salty');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
+  `name` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL,
+  `surname` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL,
+  `role` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

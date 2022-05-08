@@ -83,27 +83,36 @@ export default function EditMovie() {
   const navigate = useNavigate();
 
   const handlePhotoChange = (event) => {
-    let url = URL.createObjectURL(event.target.files[0]);
-    setPhoto(url);
-    console.log(event.target.value);
+    setPhoto(event.target.files[0]);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    let idk = '';
+    console.log(photo);
+    if (photo === '') {
+      idk = currentMovie.photo;
+    } else {
+      idk = 'default.jpg';
+    }
+    console.log(idk);
     const movie = {
-      id: id,
-      title: data.get('title'),
-      description: data.get('description'),
-      genre_fk: data.get('genre_fk'),
-      duration: data.get('duration'),
-      start_date: data.get('start_date'),
-      end_date: data.get('end_date'),
-      price: data.get('price'),
-      icon: currentMovie.photo
+      Id: id,
+      Title: data.get('title'),
+      Description: data.get('description'),
+      Genre: data.get('genre_fk'),
+      Duration: data.get('duration'),
+      StartDate: data.get('start_date'),
+      EndDate: data.get('end_date'),
+      Price: data.get('price'),
+      Icon: idk
     };
-    console.log(movie);
-    managerServices.updateMovie(movie).then((res) => {
+    const formData = new FormData();
+    formData.append('file', JSON.stringify(movie));
+    formData.append('file', photo);
+    managerServices.updateMovie(formData).then((res) => {
+      console.log(res.data);
       alert(res.data);
       navigate('/manager');
     });
@@ -119,14 +128,14 @@ export default function EditMovie() {
       setCurrentMovie(
         createData(
           id,
-          movie.title,
-          movie.description,
-          movie.genre_fk,
-          movie.price,
-          movie.duration,
-          movie.start_date,
-          movie.end_date,
-          movie.icon
+          movie.Title,
+          movie.Description,
+          movie.Genre,
+          movie.Price,
+          movie.Duration,
+          movie.StartDate,
+          movie.EndDate,
+          movie.Icon
         )
       );
     });
@@ -280,7 +289,7 @@ export default function EditMovie() {
               </Grid>
               {photo ? (
                 <Grid item xs={12}>
-                  <img src={photo} width="100%" />
+                  <img src={URL.createObjectURL(photo)} width="100%" />
                 </Grid>
               ) : (
                 <Grid item xs={12}>
