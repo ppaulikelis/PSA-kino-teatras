@@ -123,7 +123,7 @@ export default function EditMovie() {
     setGenres(data);
     //api call
     managerServices.getMovie(id).then((res) => {
-      const movie = res.data[0];
+      const movie = res.data;
       console.log(movie);
       setCurrentMovie(
         createData(

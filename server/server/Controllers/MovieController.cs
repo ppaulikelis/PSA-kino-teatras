@@ -32,19 +32,19 @@ namespace server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Movie>>> Get()
+        public List<Movie> Get()
         {
-            return await _context.Movies.ToListAsync();
+            return _context.Movies.ToList();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetById(int id)
+        public Movie GetById(int id)
         {
-            return await _context.Movies.Where(m => m.Id == id).ToListAsync();
+            return _context.Movies.Where(m => m.Id == id).FirstOrDefault();
         }
 
         [HttpPost]
-        public async Task<ActionResult<Movie>> Add([FromForm] IFormFile file) 
+        public Movie Add([FromForm] IFormFile file) 
         {
             Movie movie = new Movie();
             foreach (var key in HttpContext.Request.Form.Keys)
@@ -55,13 +55,13 @@ namespace server.Controllers
             string icon = SaveFile(file);
 
             var newMovie = new Movie() { Title = movie.Title, Description = movie.Description, Duration = movie.Duration, StartDate = movie.StartDate, EndDate = movie.EndDate, Price = movie.Price, Icon = icon, Genre = movie.Genre };
-            await _context.Movies.AddAsync(newMovie);
-            await _context.SaveChangesAsync();
+            _context.Movies.Add(newMovie);
+            _context.SaveChanges();
             return newMovie;
         }
 
         [HttpPut]
-        public async Task<ActionResult<Movie>> Edit([FromForm] IFormFile file)
+        public Movie Edit([FromForm] IFormFile file)
         {
             Movie movie = new Movie();
             foreach (var key in HttpContext.Request.Form.Keys)
@@ -71,7 +71,7 @@ namespace server.Controllers
             }
             string icon = SaveFile(file, movie.Icon);
 
-            var movieToEdit = await _context.Movies.FirstOrDefaultAsync(mov => mov.Id == movie.Id);
+            var movieToEdit = _context.Movies.FirstOrDefault(mov => mov.Id == movie.Id);
        
             movieToEdit.Title = movie.Title;
             movieToEdit.Description = movie.Description;
@@ -82,23 +82,22 @@ namespace server.Controllers
             movieToEdit.Icon = icon;
             movieToEdit.Genre = movie.Genre;
 
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             return movieToEdit;
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> Delete(int id)
+        public Movie Delete(int id)
         {
-            var movie = await _context.Movies.FirstOrDefaultAsync(movie => movie.Id == id);
+            var movie = _context.Movies.FirstOrDefault(movie => movie.Id == id);
             _context.Movies.Remove(movie);
-            await _context.SaveChangesAsync();
-            return true;
+            _context.SaveChanges();
+            return movie;
         }
-
 
         [Route("SaveFile")]
         [HttpPost]
-        public string SaveFile(IFormFile file, string oldfile=null)
+        public string SaveFile(IFormFile file, string oldfile="default.jpg")
         {
             try
             {

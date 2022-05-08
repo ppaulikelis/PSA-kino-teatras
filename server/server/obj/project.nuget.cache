@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "rC9PY7jee8PT+/hRavOo3Dd3slcihkfzhIHeFnfyHzF2LT43xckdbmoZass1OWQT707kT6PWl6Xoss5DC5Dfog==",
+  "dgSpecHash": "82ktIDmWkVehbhOlAvGB1Krtu9EFiVvnJbXzu78X6wQwq4UgBqUm8Qzkpz+GGw9Bs5r4WplBZNnzMp0hyktQew==",
   "success": true,
-  "projectFilePath": "C:\\Users\\gytis\\Desktop\\PSA-kino-teatras\\server - Copy\\server\\server.csproj",
+  "projectFilePath": "C:\\Users\\gytis\\Desktop\\PSA-kino-teatras\\server\\server\\server.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\gytis\\.nuget\\packages\\bouncycastle.netcore\\1.8.5\\bouncycastle.netcore.1.8.5.nupkg.sha512",
     "C:\\Users\\gytis\\.nuget\\packages\\google.protobuf\\3.19.4\\google.protobuf.3.19.4.nupkg.sha512",
