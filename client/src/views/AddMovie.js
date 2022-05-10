@@ -92,7 +92,7 @@ export default function AddMovie() {
     const formData = new FormData();
     formData.append('file', JSON.stringify(movie));
     formData.append('file', photo);
-    managerServices.addMovie(formData).then((res) => {
+    managerServices.add(formData).then((res) => {
       alert(res.data);
       navigate('/manager');
     });

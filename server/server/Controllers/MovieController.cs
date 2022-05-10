@@ -32,7 +32,7 @@ namespace server.Controllers
         }
 
         [HttpGet]
-        public List<Movie> Get()
+        public List<Movie> showMovieList()
         {
             return _context.Movies.ToList();
         }
@@ -44,7 +44,7 @@ namespace server.Controllers
         }
 
         [HttpPost]
-        public Movie Add([FromForm] IFormFile file) 
+        public Movie showAddMovie([FromForm] IFormFile file) 
         {
             Movie movie = new Movie();
             foreach (var key in HttpContext.Request.Form.Keys)
@@ -61,7 +61,7 @@ namespace server.Controllers
         }
 
         [HttpPut]
-        public Movie Edit([FromForm] IFormFile file)
+        public Movie showEditMovie([FromForm] IFormFile file)
         {
             Movie movie = new Movie();
             foreach (var key in HttpContext.Request.Form.Keys)
@@ -87,7 +87,7 @@ namespace server.Controllers
         }
 
         [HttpDelete("{id}")]
-        public Movie Delete(int id)
+        public Movie deleteMovie(int id)
         {
             var movie = _context.Movies.FirstOrDefault(movie => movie.Id == id);
             _context.Movies.Remove(movie);

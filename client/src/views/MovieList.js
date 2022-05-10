@@ -119,7 +119,7 @@ export default function MovieList() {
 
   useEffect(() => {
     //api call
-    managerServices.getMovies().then((res) => {
+    managerServices.get().then((res) => {
       const movieList = res.data;
       setMovies(
         movieList.map((movie) =>
@@ -131,7 +131,7 @@ export default function MovieList() {
 
   const removeMovie = () => {
     //api call
-    managerServices.removeMovie(selectedId).then((res) => {
+    managerServices.delete(selectedId).then((res) => {
       alert(res.data);
       navigate(0);
     });

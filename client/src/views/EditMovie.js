@@ -111,7 +111,7 @@ export default function EditMovie() {
     const formData = new FormData();
     formData.append('file', JSON.stringify(movie));
     formData.append('file', photo);
-    managerServices.updateMovie(formData).then((res) => {
+    managerServices.edit(formData).then((res) => {
       console.log(res.data);
       alert(res.data);
       navigate('/manager');
