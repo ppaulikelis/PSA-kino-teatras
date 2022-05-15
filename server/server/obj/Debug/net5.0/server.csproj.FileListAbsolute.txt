@@ -74,7 +74,6 @@ C:\Users\gytis\Desktop\PSA-kino-teatras\server\server\bin\Debug\net5.0\server.de
 C:\Users\gytis\Desktop\PSA-kino-teatras\server\server\bin\Debug\net5.0\server.runtimeconfig.json
 C:\Users\gytis\Desktop\PSA-kino-teatras\server\server\bin\Debug\net5.0\server.runtimeconfig.dev.json
 C:\Users\gytis\Desktop\PSA-kino-teatras\server\server\bin\Debug\net5.0\server.dll
-C:\Users\gytis\Desktop\PSA-kino-teatras\server\server\bin\Debug\net5.0\ref\server.dll
 C:\Users\gytis\Desktop\PSA-kino-teatras\server\server\bin\Debug\net5.0\server.pdb
 C:\Users\gytis\Desktop\PSA-kino-teatras\server\server\bin\Debug\net5.0\BouncyCastle.Crypto.dll
 C:\Users\gytis\Desktop\PSA-kino-teatras\server\server\bin\Debug\net5.0\Google.Protobuf.dll
@@ -136,3 +135,4 @@ C:\Users\gytis\Desktop\PSA-kino-teatras\server\server\obj\Debug\net5.0\server.dl
 C:\Users\gytis\Desktop\PSA-kino-teatras\server\server\obj\Debug\net5.0\ref\server.dll
 C:\Users\gytis\Desktop\PSA-kino-teatras\server\server\obj\Debug\net5.0\server.pdb
 C:\Users\gytis\Desktop\PSA-kino-teatras\server\server\obj\Debug\net5.0\server.genruntimeconfig.cache
+C:\Users\gytis\Desktop\PSA-kino-teatras\server\server\bin\Debug\net5.0\ref\server.dll

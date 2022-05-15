@@ -129,11 +129,11 @@ export default function MovieList() {
     });
   }, []);
 
-  const removeMovie = () => {
+  const confirmDelete = () => {
     //api call
     managerServices.delete(selectedId).then((res) => {
-      alert(res.data);
-      navigate(0);
+      alert(res.status == 200 ? 'Filmas sėkmingai pašalintas.' : 'Įvyko klaida.');
+      window.location.reload(false);
     });
     //window.location.reload(false);
     setSelectedId(-1);
@@ -159,7 +159,7 @@ export default function MovieList() {
           <Button color="primary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button color="error" autoFocus onClick={removeMovie}>
+          <Button color="error" autoFocus onClick={confirmDelete}>
             Delete
           </Button>
         </DialogActions>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace server.Models
+namespace server.sakila
 {
     public partial class Manager
     {

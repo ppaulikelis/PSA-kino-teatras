@@ -12,9 +12,8 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import managerServices from '../services/manager/manager.services';
-import { useNavigate } from 'react-router-dom';
 
-const data = [
+const genres = [
   {
     id: 1,
     name: 'Animation'
@@ -77,16 +76,14 @@ function createData(
 
 export default function EditMovie() {
   const { id } = useParams();
-  const [genres, setGenres] = useState([]);
   const [photo, setPhoto] = useState('');
   const [currentMovie, setCurrentMovie] = useState(createData(-1, '', '', -1, 1, 1, '', '', ''));
-  const navigate = useNavigate();
 
   const handlePhotoChange = (event) => {
     setPhoto(event.target.files[0]);
   };
 
-  const handleSubmit = (event) => {
+  const editMovie = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     let idk = '';
@@ -112,15 +109,12 @@ export default function EditMovie() {
     formData.append('file', JSON.stringify(movie));
     formData.append('file', photo);
     managerServices.edit(formData).then((res) => {
-      console.log(res.data);
-      alert(res.data);
-      navigate('/manager');
+      alert(res.status == 200 ? 'Filmas sėkmingai atnaujintas.' : 'Įvyko klaida.');
+      window.location = 'http://localhost:3000/manager';
     });
   };
 
   useEffect(() => {
-    //api call
-    setGenres(data);
     //api call
     managerServices.getMovie(id).then((res) => {
       const movie = res.data;
@@ -146,7 +140,7 @@ export default function EditMovie() {
       <Typography variant="h4" component="div" mb={3} align="center">
         Edit movie
       </Typography>
-      <Box component="form" onSubmit={handleSubmit}>
+      <Box component="form" onSubmit={editMovie}>
         <Box display="flex" flexDirection={{ md: 'row', sm: 'column', xs: 'column' }}>
           <Box width={{ md: '70%', sm: '100%', xs: '100%' }} mr={5} mb={2}>
             <Grid container spacing={2}>

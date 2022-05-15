@@ -32,12 +32,14 @@ namespace server.Database
         public virtual DbSet<Size> Sizes { get; set; }
         public virtual DbSet<Snack> Snacks { get; set; }
         public virtual DbSet<SnackType> SnackTypes { get; set; }
+        public virtual DbSet<Subscription> Subscriptions { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseMySQL("server=localhost;port=3306;database=psa_kino_teatras;user=root;password=;");
             }
         }
@@ -48,9 +50,15 @@ namespace server.Database
             {
                 entity.ToTable("administrator");
 
+                entity.HasIndex(e => e.FkUserId, "fk_User_id");
+
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
+
+                entity.Property(e => e.FkUserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("fk_User_id");
             });
 
             modelBuilder.Entity<ChairType>(entity =>
@@ -77,6 +85,8 @@ namespace server.Database
 
                 entity.HasIndex(e => e.FavouriteGenre, "favourite_genre");
 
+                entity.HasIndex(e => e.FkUserId, "fk_User_id");
+
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
@@ -84,6 +94,10 @@ namespace server.Database
                 entity.Property(e => e.FavouriteGenre)
                     .HasColumnType("int(11)")
                     .HasColumnName("favourite_genre");
+
+                entity.Property(e => e.FkUserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("fk_User_id");
 
                 entity.Property(e => e.WatchedMovieCount)
                     .HasColumnType("int(11)")
@@ -109,9 +123,15 @@ namespace server.Database
             {
                 entity.ToTable("manager");
 
+                entity.HasIndex(e => e.FkUserId, "fk_User_id");
+
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
+
+                entity.Property(e => e.FkUserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("fk_User_id");
             });
 
             modelBuilder.Entity<Movie>(entity =>
@@ -332,6 +352,27 @@ namespace server.Database
                     .IsFixedLength(true);
             });
 
+            modelBuilder.Entity<Subscription>(entity =>
+            {
+                entity.ToTable("subscription");
+
+                entity.HasIndex(e => e.FkMovieId, "fk_Movie_id");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.AnswerDate)
+                    .HasColumnType("date")
+                    .HasColumnName("answer_date");
+
+                entity.Property(e => e.FkMovieId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("fk_Movie_id");
+
+                entity.Property(e => e.IsSent).HasColumnName("is_sent");
+            });
+
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("user");
@@ -354,11 +395,6 @@ namespace server.Database
                     .IsRequired()
                     .HasMaxLength(255)
                     .HasColumnName("password");
-
-                entity.Property(e => e.Role)
-                    .IsRequired()
-                    .HasMaxLength(255)
-                    .HasColumnName("role");
 
                 entity.Property(e => e.Surname)
                     .IsRequired()

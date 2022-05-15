@@ -8,5 +8,6 @@ namespace server.Models
     public partial class Administrator
     {
         public int Id { get; set; }
+        public int FkUserId { get; set; }
     }
 }

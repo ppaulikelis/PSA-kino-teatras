@@ -9,12 +9,11 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import InsertPhotoRoundedIcon from '@mui/icons-material/InsertPhotoRounded';
 import managerServices from '../services/manager/manager.services';
-import { useNavigate } from 'react-router-dom';
 
-const data = [
+const genres = [
   {
     id: 1,
     name: 'Animation'
@@ -62,10 +61,8 @@ const data = [
 ];
 
 export default function AddMovie() {
-  const [genres, setGenres] = useState([]);
   const [currentGenre, setCurrentGenre] = useState('');
   const [photo, setPhoto] = useState('');
-  const navigate = useNavigate();
 
   const handleGenreChange = (event) => {
     setCurrentGenre(event.target.value);
@@ -75,7 +72,7 @@ export default function AddMovie() {
     setPhoto(event.target.files[0]);
   };
 
-  const handleSubmit = (event) => {
+  const submit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const movie = {
@@ -93,22 +90,17 @@ export default function AddMovie() {
     formData.append('file', JSON.stringify(movie));
     formData.append('file', photo);
     managerServices.add(formData).then((res) => {
-      alert(res.data);
-      navigate('/manager');
+      alert(res.status == 200 ? 'Filmas sėkmingai pridėtas.' : 'Įvyko klaida.');
+      window.location = 'http://localhost:3000/manager';
     });
   };
-
-  useEffect(() => {
-    //api call
-    setGenres(data);
-  }, []);
 
   return (
     <Box>
       <Typography variant="h4" component="div" mb={3} align="center">
         Add movie
       </Typography>
-      <Box component="form" onSubmit={handleSubmit}>
+      <Box component="form" onSubmit={submit}>
         <Box display="flex" flexDirection={{ md: 'row', sm: 'column', xs: 'column' }}>
           <Box width={{ md: '70%', sm: '100%', xs: '100%' }} mr={5} mb={2}>
             <Grid container spacing={2}>

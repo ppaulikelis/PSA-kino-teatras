@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using server.Database;
+using server.APIs;
 
 namespace server.Controllers
 {
@@ -40,18 +41,6 @@ namespace server.Controllers
                 return NotFound();
             }
             return Ok(movies);
-
-            //var data = _context.Genres.Join(
-            //    _context.Movies,
-            //    genre => genre.Id,
-            //    movie => movie.Genre,
-            //    (genre, movie) => new
-            //    {
-            //        movie,
-            //        GenreName = genre.Name
-
-            //    }
-            //).ToList();
         }
 
         public bool validate(Movie movie)
@@ -71,7 +60,7 @@ namespace server.Controllers
             var movie = _context.Movies.Where(m => m.Id == id).FirstOrDefault();
             if(movie == null)
             {
-                return BadRequest("Duomenys nerasti pagal identifikatorių.");
+                return BadRequest();
             }
             return Ok(movie);
         }
@@ -91,13 +80,15 @@ namespace server.Controllers
             bool isValid = validate(movie);
             if(!isValid)
             {
-                return BadRequest("Duomenys nėra tinkami.");
+                return BadRequest();
             }
 
             var newMovie = new Movie() { Title = movie.Title, Description = movie.Description, Duration = movie.Duration, StartDate = movie.StartDate, EndDate = movie.EndDate, Price = movie.Price, Icon = movie.Icon, Genre = movie.Genre };
             _context.Movies.Add(newMovie);
             _context.SaveChanges();
-            return Ok(newMovie);
+
+            formSubscription(newMovie);
+            return Ok();
         }
 
         [HttpPut]
@@ -133,7 +124,7 @@ namespace server.Controllers
             movieToEdit.Genre = movie.Genre;
 
             _context.SaveChanges();
-            return Ok(movieToEdit);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -142,18 +133,45 @@ namespace server.Controllers
             var movie = _context.Movies.FirstOrDefault(movie => movie.Id == id);
             if(movie == null)
             {
-                return BadRequest("Netinkami duomenys trynimui pagal identifikatorių.");
+                return BadRequest();
             }
             _context.Movies.Remove(movie);
             _context.SaveChanges();
-            return Ok(movie);
+            return Ok();
         }
 
-        //[HttpGet]
-        //public IActionResult getClients()
-        //{
+        public IActionResult formSubscription(Movie movie)
+        {
+            var clients = _context.Clients.Where(client => client.FavouriteGenre != null);
 
-        //}
+            _context.Subscriptions.Add(new Subscription(null, null, movie.Id));
+            _context.SaveChanges();
+
+            var data = _context.Clients.Join(
+                _context.Users,
+                client => client.FkUserId,
+                user => user.Id,
+                (client, user) => new
+                {
+                    Genre = client.FavouriteGenre,
+                    Recipient = user.Email,
+                    Text = "Išleistas naujas Jūsų mėgstamo žanro filmas: " + movie.Title,
+                    Sender = "KTVS@gmail.com",
+                }
+            ).Where(x => x.Genre == movie.Genre).ToList();
+
+            Subscription sub = _context.Subscriptions.Where(sub => sub.FkMovieId == movie.Id).FirstOrDefault();
+            sub.Id = sub.Id;
+            sub.IsSent = false;
+            sub.AnswerDate = null;
+            _context.SaveChanges();
+
+
+            //EMAIL SERVER API
+            EmailServer.sendEmail(data);
+
+            return Ok();
+        }
 
         [Route("SaveFile")]
         [HttpPost]
