@@ -32,19 +32,40 @@ namespace server.Controllers
         }
 
         [HttpGet]
-        public List<Movie> showMovieList()
+        public IActionResult showMovieList()
         {
-            return _context.Movies.ToList();
+            var movies = _context.Movies.ToList();
+            if(movies.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(movies);
+        }
+
+        public bool validate(Movie movie)
+        {
+            bool isNonNull = !(movie == null);
+            bool containsNullProperties = movie.GetType().GetProperties()
+            .Where(pi => pi.PropertyType == typeof(string))
+            .Select(pi => (string)pi.GetValue(movie))
+            .Any(value => string.IsNullOrEmpty(value));
+            bool notDefaultImage = !movie.Icon.Equals("default.jpg");
+            return isNonNull && !containsNullProperties && notDefaultImage;
         }
 
         [HttpGet("{id}")]
-        public Movie GetById(int id)
+        public IActionResult GetById(int id)
         {
-            return _context.Movies.Where(m => m.Id == id).FirstOrDefault();
+            var movie = _context.Movies.Where(m => m.Id == id).FirstOrDefault();
+            if(movie == null)
+            {
+                return BadRequest("Duomenys nerasti pagal identifikatorių.");
+            }
+            return Ok(movie);
         }
 
         [HttpPost]
-        public Movie showAddMovie([FromForm] IFormFile file) 
+        public IActionResult showAddMovie([FromForm] IFormFile file) 
         {
             Movie movie = new Movie();
             foreach (var key in HttpContext.Request.Form.Keys)
@@ -53,15 +74,22 @@ namespace server.Controllers
                 movie = JsonConvert.DeserializeObject<Movie>(val);
             }
             string icon = SaveFile(file);
+            movie.Icon = icon;
 
-            var newMovie = new Movie() { Title = movie.Title, Description = movie.Description, Duration = movie.Duration, StartDate = movie.StartDate, EndDate = movie.EndDate, Price = movie.Price, Icon = icon, Genre = movie.Genre };
+            bool isValid = validate(movie);
+            if(!isValid)
+            {
+                return BadRequest("Duomenys nėra tinkami.");
+            }
+
+            var newMovie = new Movie() { Title = movie.Title, Description = movie.Description, Duration = movie.Duration, StartDate = movie.StartDate, EndDate = movie.EndDate, Price = movie.Price, Icon = movie.Icon, Genre = movie.Genre };
             _context.Movies.Add(newMovie);
             _context.SaveChanges();
-            return newMovie;
+            return Ok(newMovie);
         }
 
         [HttpPut]
-        public Movie showEditMovie([FromForm] IFormFile file)
+        public IActionResult showEditMovie([FromForm] IFormFile file)
         {
             Movie movie = new Movie();
             foreach (var key in HttpContext.Request.Form.Keys)
@@ -70,9 +98,19 @@ namespace server.Controllers
                 movie = JsonConvert.DeserializeObject<Movie>(val);
             }
             string icon = SaveFile(file, movie.Icon);
+            movie.Icon = icon;
+
+            bool isValid = validate(movie);
+            if (!isValid)
+            {
+                return BadRequest("Duomenys nėra tinkami.");
+            }
 
             var movieToEdit = _context.Movies.FirstOrDefault(mov => mov.Id == movie.Id);
-       
+            if(movieToEdit == null)
+            {
+                return NotFound();
+            }
             movieToEdit.Title = movie.Title;
             movieToEdit.Description = movie.Description;
             movieToEdit.Duration = movie.Duration;
@@ -83,16 +121,20 @@ namespace server.Controllers
             movieToEdit.Genre = movie.Genre;
 
             _context.SaveChanges();
-            return movieToEdit;
+            return Ok(movieToEdit);
         }
 
         [HttpDelete("{id}")]
-        public Movie deleteMovie(int id)
+        public IActionResult deleteMovie(int id)
         {
             var movie = _context.Movies.FirstOrDefault(movie => movie.Id == id);
+            if(movie == null)
+            {
+                return BadRequest("Netinkami duomenys trynimui pagal identifikatorių.");
+            }
             _context.Movies.Remove(movie);
             _context.SaveChanges();
-            return movie;
+            return Ok(movie);
         }
 
         [Route("SaveFile")]
