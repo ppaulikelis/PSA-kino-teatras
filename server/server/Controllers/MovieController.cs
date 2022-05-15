@@ -40,6 +40,18 @@ namespace server.Controllers
                 return NotFound();
             }
             return Ok(movies);
+
+            //var data = _context.Genres.Join(
+            //    _context.Movies,
+            //    genre => genre.Id,
+            //    movie => movie.Genre,
+            //    (genre, movie) => new
+            //    {
+            //        movie,
+            //        GenreName = genre.Name
+
+            //    }
+            //).ToList();
         }
 
         public bool validate(Movie movie)
@@ -136,6 +148,12 @@ namespace server.Controllers
             _context.SaveChanges();
             return Ok(movie);
         }
+
+        //[HttpGet]
+        //public IActionResult getClients()
+        //{
+
+        //}
 
         [Route("SaveFile")]
         [HttpPost]

@@ -86,8 +86,9 @@ INSERT INTO Snack_type(id, name) VALUES(4, 'Salty');
 CREATE TABLE Administrator
 (
 	id integer NOT NULL,
+	fk_User_id integer NOT NULL,
 	PRIMARY KEY(id),
-	FOREIGN KEY(id) REFERENCES User (id)
+	FOREIGN KEY(fk_User_id) REFERENCES User (id)
 );
 
 CREATE TABLE Client
@@ -95,16 +96,18 @@ CREATE TABLE Client
 	watched_movie_count integer NOT NULL,
 	favourite_genre integer NOT NULL,
 	id integer NOT NULL,
+	fk_User_id integer NOT NULL,
 	PRIMARY KEY(id),
 	FOREIGN KEY(favourite_genre) REFERENCES Genre (id),
-	FOREIGN KEY(id) REFERENCES User (id)
+	FOREIGN KEY(fk_User_id) REFERENCES User (id)
 );
 
 CREATE TABLE Manager
 (
 	id integer NOT NULL,
+	fk_User_id integer NOT NULL,
 	PRIMARY KEY(id),
-	FOREIGN KEY(id) REFERENCES User (id)
+	FOREIGN KEY(fk_User_id) REFERENCES User (id)
 );
 
 CREATE TABLE Movie
