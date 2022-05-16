@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "82ktIDmWkVehbhOlAvGB1Krtu9EFiVvnJbXzu78X6wQwq4UgBqUm8Qzkpz+GGw9Bs5r4WplBZNnzMp0hyktQew==",
+  "dgSpecHash": "dUNEMt0DpCmd7Gt2V8DyddH0J/X25oGfBWu7n362YjlxMl40Vy2EBlqQekK6UFwPdg/iC2NOG44nGJjptcJ5Dg==",
   "success": true,
   "projectFilePath": "C:\\Users\\gytis\\Desktop\\PSA-kino-teatras\\server\\server\\server.csproj",
   "expectedPackageFiles": [
@@ -145,7 +145,8 @@
     "C:\\Users\\gytis\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\gytis\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\gytis\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\gytis\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
+    "C:\\Users\\gytis\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
+    "C:\\Users\\gytis\\.nuget\\packages\\typemerger\\2.1.1\\typemerger.2.1.1.nupkg.sha512"
   ],
   "logs": []
 }

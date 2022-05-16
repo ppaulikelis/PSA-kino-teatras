@@ -65,6 +65,10 @@
             "MySql.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.13, )"
+            },
+            "TypeMerger": {
+              "target": "Package",
+              "version": "[2.1.1, )"
             }
           },
           "imports": [

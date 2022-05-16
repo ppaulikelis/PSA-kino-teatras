@@ -2229,6 +2229,15 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
+      },
+      "TypeMerger/2.1.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/TypeMerger.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/TypeMerger.dll": {}
+        }
       }
     }
   },
@@ -7649,6 +7658,20 @@
         "system.xml.xmlserializer.4.3.0.nupkg.sha512",
         "system.xml.xmlserializer.nuspec"
       ]
+    },
+    "TypeMerger/2.1.1": {
+      "sha512": "9rIhG7zNCzaDgYSZYJB0jO80Km+C0ipPttbSgj/TgcLOAgb/HCWDW4ozzAWyX+DtW+sH9UB8euaQokEzzjcliQ==",
+      "type": "package",
+      "path": "typemerger/2.1.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "README.md",
+        "lib/netstandard2.1/TypeMerger.dll",
+        "typemerger.2.1.1.nupkg.sha512",
+        "typemerger.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
@@ -7658,7 +7681,8 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 5.0.16",
       "Microsoft.EntityFrameworkCore.SqlServer.Design >= 1.1.6",
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.16",
-      "MySql.EntityFrameworkCore >= 5.0.13"
+      "MySql.EntityFrameworkCore >= 5.0.13",
+      "TypeMerger >= 2.1.1"
     ]
   },
   "packageFolders": {
@@ -7725,6 +7749,10 @@
           "MySql.EntityFrameworkCore": {
             "target": "Package",
             "version": "[5.0.13, )"
+          },
+          "TypeMerger": {
+            "target": "Package",
+            "version": "[2.1.1, )"
           }
         },
         "imports": [

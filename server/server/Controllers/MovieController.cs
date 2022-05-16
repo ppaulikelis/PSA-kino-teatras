@@ -144,10 +144,6 @@ namespace server.Controllers
 
         public IActionResult formSubscription(Movie movie)
         {
-
-            _context.Subscriptions.Add(new Subscription(null, null, movie.Id));
-            _context.SaveChanges();
-
             var data = _context.Clients.Join(
                 _context.Users,
                 client => client.FkUserId,
@@ -161,15 +157,17 @@ namespace server.Controllers
                 }
             ).Where(x => x.Genre == movie.Genre).ToList();
 
+            _context.Subscriptions.Add(new Subscription(null, null, movie.Id));
+            _context.SaveChanges();
+
             Subscription sub = _context.Subscriptions.Where(sub => sub.FkMovieId == movie.Id).FirstOrDefault();
             sub.Id = sub.Id;
             sub.IsSent = false;
             sub.AnswerDate = null;
             _context.SaveChanges();
 
-
             //EMAIL SERVER API
-            EmailBoundry.send(data);
+            var status = EmailBoundry.send(data);
 
             return Ok();
         }
