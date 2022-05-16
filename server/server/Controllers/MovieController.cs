@@ -36,10 +36,6 @@ namespace server.Controllers
         public IActionResult showMovieList()
         {
             var movies = _context.Movies.ToList();
-            if(movies.Count == 0)
-            {
-                return NotFound();
-            }
             return Ok(movies);
         }
 
@@ -66,7 +62,7 @@ namespace server.Controllers
         }
 
         [HttpPost]
-        public IActionResult showAddMovie([FromForm] IFormFile file) 
+        public IActionResult addMovie([FromForm] IFormFile file) 
         {
             Movie movie = new Movie();
             foreach (var key in HttpContext.Request.Form.Keys)
@@ -87,12 +83,18 @@ namespace server.Controllers
             _context.Movies.Add(newMovie);
             _context.SaveChanges();
 
-            formSubscription(newMovie);
+
+            var clients = _context.Clients.Where(client => client.FavouriteGenre != null);
+            if(clients != null)
+            {
+                formSubscription(newMovie);
+            }
+
             return Ok();
         }
 
         [HttpPut]
-        public IActionResult showEditMovie([FromForm] IFormFile file)
+        public IActionResult editMovie([FromForm] IFormFile file)
         {
             Movie movie = new Movie();
             foreach (var key in HttpContext.Request.Form.Keys)
@@ -142,7 +144,6 @@ namespace server.Controllers
 
         public IActionResult formSubscription(Movie movie)
         {
-            var clients = _context.Clients.Where(client => client.FavouriteGenre != null);
 
             _context.Subscriptions.Add(new Subscription(null, null, movie.Id));
             _context.SaveChanges();
@@ -168,7 +169,7 @@ namespace server.Controllers
 
 
             //EMAIL SERVER API
-            EmailServer.sendEmail(data);
+            EmailBoundry.send(data);
 
             return Ok();
         }

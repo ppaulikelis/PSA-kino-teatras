@@ -108,12 +108,12 @@ export default function MovieList() {
     setPage(0);
   };
 
-  const handleClickOpen = (id) => {
+  const selectDeletion = (id) => {
     setSelectedId(id);
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const cancelDelete = () => {
     setOpen(false);
   };
 
@@ -144,7 +144,7 @@ export default function MovieList() {
     <Box>
       <Dialog
         open={open}
-        onClose={handleClose}
+        onClose={cancelDelete}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description">
         <DialogTitle id="alert-dialog-title">
@@ -156,7 +156,7 @@ export default function MovieList() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button color="primary" onClick={handleClose}>
+          <Button color="primary" onClick={cancelDelete}>
             Cancel
           </Button>
           <Button color="error" autoFocus onClick={confirmDelete}>
@@ -227,7 +227,7 @@ export default function MovieList() {
                   <IconButton
                     color="error"
                     onClick={() => {
-                      handleClickOpen(movie.id);
+                      selectDeletion(movie.id);
                     }}>
                     <DeleteRoundedIcon />
                   </IconButton>

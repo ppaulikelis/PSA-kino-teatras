@@ -110,7 +110,6 @@ export default function EditMovie() {
     formData.append('file', photo);
     managerServices.edit(formData).then((res) => {
       alert(res.status == 200 ? 'Filmas sėkmingai atnaujintas.' : 'Įvyko klaida.');
-      window.location = 'http://localhost:3000/manager';
     });
   };
 

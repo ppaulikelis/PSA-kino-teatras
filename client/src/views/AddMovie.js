@@ -91,7 +91,6 @@ export default function AddMovie() {
     formData.append('file', photo);
     managerServices.add(formData).then((res) => {
       alert(res.status == 200 ? 'Filmas sėkmingai pridėtas.' : 'Įvyko klaida.');
-      window.location = 'http://localhost:3000/manager';
     });
   };
 

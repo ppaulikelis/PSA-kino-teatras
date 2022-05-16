@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace server.APIs
 {
-    public static class EmailServer
+    public static class EmailBoundry
     {
-        public static bool sendEmail(dynamic subscription)
+        public static bool send(dynamic subscription)
         {
             return true;
         }
