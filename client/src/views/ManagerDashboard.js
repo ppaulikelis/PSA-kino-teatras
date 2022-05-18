@@ -21,6 +21,8 @@ import AddSnack from './AddSnack';
 import EditSnack from './EditSnack';
 import SeatTypeList from './SeatTypeList';
 import AddSeatType from './AddSeatType';
+import Payment from './Payment';
+import PayPalBoundary from './PayPalBoundary';
 
 export default function ManagerDashboard() {
   return (
@@ -54,6 +56,9 @@ export default function ManagerDashboard() {
             {/* Seat type */}
             <Route path="/seattypes" element={<SeatTypeList />} />
             <Route path="/seattypes/addseattype" element={<AddSeatType />} />
+            {/* Payment */}
+            <Route path="/payment" element={<Payment />} />
+            <Route path="/payment/paypalboundary" element={<PayPalBoundary />} />
           </Routes>
         </Box>
       </Container>
