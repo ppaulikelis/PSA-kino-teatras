@@ -16,21 +16,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
-import {
-  Button,
-  TableFooter,
-  TableHead,
-  TablePagination,
-  //TextField,
-  Typography
-} from '@mui/material';
+import { Button, TableFooter, TableHead, TablePagination, Typography } from '@mui/material';
 import { useTheme } from '@emotion/react';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import PropTypes from 'prop-types';
-//import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import managerServices from '../services/manager/manager.services';
 
 function TablePaginationActions(props) {
@@ -167,16 +159,6 @@ export default function MovieList() {
       <Typography variant="h4" component="div" mb={3} align="center">
         Movie list
       </Typography>
-      {/* <TextField
-        id="search"
-        name="search"
-        label="Search"
-        fullWidth
-        sx={{ mb: 2 }}
-        InputProps={{
-          endAdornment: <SearchRoundedIcon />
-        }}
-      /> */}
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>

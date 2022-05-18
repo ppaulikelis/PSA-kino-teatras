@@ -66,6 +66,7 @@ export default function AddMovie() {
 
   const handleGenreChange = (event) => {
     setCurrentGenre(event.target.value);
+    console.log(currentGenre);
   };
 
   const handlePhotoChange = (event) => {

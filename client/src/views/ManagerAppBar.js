@@ -23,7 +23,7 @@ const pages = [
     url: '/manager/sessions'
   },
   {
-    name: 'Movie theatres',
+    name: 'Movie theaters',
     url: '/manager/theaters'
   },
   {
