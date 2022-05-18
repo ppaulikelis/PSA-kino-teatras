@@ -1,6 +1,7 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
+import { genres } from '../constants';
 
 export default function SubscribeNews() {
   const [showSelect, setShowSelect] = useState(false);
@@ -8,6 +9,10 @@ export default function SubscribeNews() {
 
   const selectSubscribe = () => {
     setShowSelect(true);
+  };
+
+  const selectDecision = () => {
+    console.log(currentSelect);
   };
 
   return (
@@ -34,11 +39,13 @@ export default function SubscribeNews() {
               ))}
             </Select>
           </FormControl>
+          <br />
+          <br />
           <Box display={'flex'}>
             <Button
               color="primary"
               variant="contained"
-              onClick={selectSubscribe}
+              onClick={selectDecision}
               sx={{ marginLeft: 'auto' }}>
               Subscribe
             </Button>
