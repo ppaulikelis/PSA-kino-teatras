@@ -15,17 +15,13 @@ import { useNavigate } from 'react-router-dom';
 
 const pages = [
   {
-    name: 'Client',
-    url: '/client'
-  },
-  {
-    name: 'Manager',
-    url: '/manager'
+    name: 'Subscribe news',
+    url: 'subscribenews'
   }
 ];
 const settings = ['Account', 'Log out'];
 
-const MainAppBar = () => {
+const ClientAppbBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
@@ -147,4 +143,4 @@ const MainAppBar = () => {
     </AppBar>
   );
 };
-export default MainAppBar;
+export default ClientAppbBar;
