@@ -287,6 +287,8 @@ namespace server.Database
                     .HasColumnType("int(11)")
                     .HasColumnName("fk_Chair_type_id");
 
+                entity.Property(e => e.IsTaken).HasColumnName("is_taken");
+
                 entity.Property(e => e.Number)
                     .HasColumnType("int(11)")
                     .HasColumnName("number");
