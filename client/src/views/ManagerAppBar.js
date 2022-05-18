@@ -27,10 +27,6 @@ const pages = [
     url: '/manager/theaters'
   },
   {
-    name: 'Seats',
-    url: '/manager/seats'
-  },
-  {
     name: 'Snacks',
     url: '/manager/snacks'
   },
@@ -41,6 +37,10 @@ const pages = [
   {
     name: 'Voting',
     url: '/manager/elections'
+  },
+  {
+    name: 'Seat Types',
+    url: '/manager/seattypes'
   }
 ];
 const settings = ['Account', 'Log out'];
