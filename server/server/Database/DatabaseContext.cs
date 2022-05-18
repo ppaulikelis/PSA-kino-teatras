@@ -27,12 +27,14 @@ namespace server.Database
         public virtual DbSet<MovieHall> MovieHalls { get; set; }
         public virtual DbSet<MovieTheatre> MovieTheatres { get; set; }
         public virtual DbSet<OrderTable> OrderTables { get; set; }
+        public virtual DbSet<OrderedSnack> OrderedSnacks { get; set; }
         public virtual DbSet<Seat> Seats { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
         public virtual DbSet<Size> Sizes { get; set; }
         public virtual DbSet<Snack> Snacks { get; set; }
         public virtual DbSet<SnackType> SnackTypes { get; set; }
         public virtual DbSet<Subscription> Subscriptions { get; set; }
+        public virtual DbSet<Ticket> Tickets { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -236,6 +238,31 @@ namespace server.Database
                     .HasColumnName("order_date");
             });
 
+            modelBuilder.Entity<OrderedSnack>(entity =>
+            {
+                entity.ToTable("ordered_snack");
+
+                entity.HasIndex(e => e.FkOrderTableId, "is_a_part");
+
+                entity.HasIndex(e => e.FkSnackId, "is_a_part_of");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.Amount)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("amount");
+
+                entity.Property(e => e.FkOrderTableId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("fk_Order_table_id");
+
+                entity.Property(e => e.FkSnackId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("fk_Snack_id");
+            });
+
             modelBuilder.Entity<Seat>(entity =>
             {
                 entity.HasKey(e => new { e.Id, e.FkMovieHallId })
@@ -371,6 +398,31 @@ namespace server.Database
                     .HasColumnName("fk_Movie_id");
 
                 entity.Property(e => e.IsSent).HasColumnName("is_sent");
+            });
+
+            modelBuilder.Entity<Ticket>(entity =>
+            {
+                entity.ToTable("ticket");
+
+                entity.HasIndex(e => e.FkSessionId, "has");
+
+                entity.HasIndex(e => e.FkOrderTableId, "is_a_part_off");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.Amount)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("amount");
+
+                entity.Property(e => e.FkOrderTableId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("fk_Order_table_id");
+
+                entity.Property(e => e.FkSessionId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("fk_Session_id");
             });
 
             modelBuilder.Entity<User>(entity =>

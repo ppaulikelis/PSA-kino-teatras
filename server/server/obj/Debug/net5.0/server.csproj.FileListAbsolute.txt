@@ -136,3 +136,4 @@ C:\Users\gytis\Desktop\PSA-kino-teatras\server\server\obj\Debug\net5.0\ref\serve
 C:\Users\gytis\Desktop\PSA-kino-teatras\server\server\obj\Debug\net5.0\server.pdb
 C:\Users\gytis\Desktop\PSA-kino-teatras\server\server\obj\Debug\net5.0\server.genruntimeconfig.cache
 C:\Users\gytis\Desktop\PSA-kino-teatras\server\server\bin\Debug\net5.0\ref\server.dll
+C:\Users\gytis\Desktop\PSA-kino-teatras\server\server\bin\Debug\net5.0\TypeMerger.dll
