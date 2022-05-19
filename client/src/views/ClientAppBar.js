@@ -19,6 +19,10 @@ const pages = [
     url: 'subscribenews'
   },
   {
+    name: 'Create order',
+    url: 'createorder'
+  },
+  {
     name: 'View Order',
     url: 'order'
   },
@@ -57,7 +61,8 @@ const ClientAppbBar = () => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}>
+            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+            onClick={() => navigate('/')}>
             MOVIE THEATRE SYSTEM
           </Typography>
 
@@ -104,8 +109,9 @@ const ClientAppbBar = () => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            KINO TEATRAS
+            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+            onClick={() => navigate('/')}>
+            MOVIE THEATRE SYSTEM
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
