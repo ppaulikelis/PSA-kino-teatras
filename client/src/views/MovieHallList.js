@@ -17,13 +17,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import { Button, TableHead, Typography } from '@mui/material';
+import hallServices from '../services/manager/hall.services';
 
-const tempData = [
-  {
-    Id: 666,
-    Number: 1
-  }
-];
+function createData(Number, Id) {
+  return { Number, Id };
+}
 
 export default function MovieHallList() {
   const { theaterid } = useParams();
@@ -34,7 +32,10 @@ export default function MovieHallList() {
 
   useEffect(() => {
     //api call
-    setMovieHalls(tempData);
+    hallServices.get(theaterid).then((res) => {
+      const hallList = res.data;
+      setMovieHalls(hallList.map((hall) => createData(hall.Number, hall.Id)));
+    });
   }, []);
 
   const selectDeletion = (id) => {
@@ -48,7 +49,10 @@ export default function MovieHallList() {
 
   const confirmDelete = () => {
     //api call
-    console.log(selectedId);
+    hallServices.delete(selectedId).then((res) => {
+      alert(res.status == 200 ? 'Movie hall deleted successfully.' : 'Error during deletion.');
+      window.location.reload(false);
+    });
     setSelectedId(-1);
     setOpen(false);
   };

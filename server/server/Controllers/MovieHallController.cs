@@ -40,9 +40,9 @@ namespace server.Controllers
 
         [Route("api/[controller]/movieTheatres")]
         [HttpGet]
-        public IActionResult getMovieTheatres()
+        public IActionResult getMovieTheatres(int id)
         {
-            var x = _context.MovieTheatres.ToList();
+            var x = _context.MovieTheatres.Where(x => x.Id == id).ToList();
             return Ok(x);
         }
 
@@ -81,7 +81,7 @@ namespace server.Controllers
                 return BadRequest("Duomenys nėra tinkami.");
             }
 
-            var xToEdit = _context.MovieHalls.FirstOrDefault(xToEdit => xToEdit.Id == xToEdit.Id);
+            var xToEdit = _context.MovieHalls.FirstOrDefault(xToEdit => xToEdit.Id == x.Id);
             if (xToEdit == null)
             {
                 return NotFound();

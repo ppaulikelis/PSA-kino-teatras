@@ -1,6 +1,7 @@
 import { Button, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
+import theaterServices from '../services/manager/theater.services';
 
 export default function AddMovieTheater() {
   const submit = (event) => {
@@ -9,7 +10,10 @@ export default function AddMovieTheater() {
     const theater = {
       Address: data.get('address')
     };
-    console.log(theater);
+
+    theaterServices.add(theater).then((res) => {
+      alert(res.status == 200 ? 'Movie theatre added successfully.' : 'Error during add.');
+    });
   };
 
   return (
