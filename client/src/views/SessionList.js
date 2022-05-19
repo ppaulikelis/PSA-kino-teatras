@@ -17,15 +17,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import { Button, TableHead, Typography } from '@mui/material';
+import sessionServices from '../services/manager/session.services';
 
-const tempSessions = [
-  {
-    Id: 999,
-    StartTime: 'Time',
-    FkMovieId: 666,
-    FkMovieHallId: 333
-  }
-];
+function createData(StartTime, Id, FkMovieId, FkMovieHallId) {
+  return { StartTime, Id, FkMovieId, FkMovieHallId };
+}
 
 export default function SessionList() {
   const [sessions, setSessions] = useState([]);
@@ -35,7 +31,14 @@ export default function SessionList() {
 
   useEffect(() => {
     //api call
-    setSessions(tempSessions);
+    sessionServices.get().then((res) => {
+      const sessionList = res.data;
+      setSessions(
+        sessionList.map((session) =>
+          createData(session.StartTime, session.Id, session.FkMovieId, session.FkMovieHallId)
+        )
+      );
+    });
   }, []);
 
   const selectDeletion = (id) => {

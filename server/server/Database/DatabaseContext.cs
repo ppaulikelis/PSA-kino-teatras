@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using server.Models;
-
 #nullable disable
 
 namespace server.Database
@@ -316,9 +315,7 @@ namespace server.Database
                     .HasColumnType("int(11)")
                     .HasColumnName("fk_Movie_id");
 
-                entity.Property(e => e.StartTime)
-                    .HasColumnType("date")
-                    .HasColumnName("start_time");
+                entity.Property(e => e.StartTime).HasColumnName("start_time");
             });
 
             modelBuilder.Entity<Size>(entity =>
@@ -404,6 +401,8 @@ namespace server.Database
             {
                 entity.ToTable("ticket");
 
+                entity.HasIndex(e => e.FkSeatId, "fk_Seat_id");
+
                 entity.HasIndex(e => e.FkSessionId, "has");
 
                 entity.HasIndex(e => e.FkOrderTableId, "is_a_part_off");
@@ -412,13 +411,13 @@ namespace server.Database
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
 
-                entity.Property(e => e.Amount)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("amount");
-
                 entity.Property(e => e.FkOrderTableId)
                     .HasColumnType("int(11)")
                     .HasColumnName("fk_Order_table_id");
+
+                entity.Property(e => e.FkSeatId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("fk_Seat_id");
 
                 entity.Property(e => e.FkSessionId)
                     .HasColumnType("int(11)")

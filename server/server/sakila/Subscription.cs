@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace server.Models
+namespace server.sakila
 {
-    public partial class Session
+    public partial class Subscription
     {
-        public TimeSpan StartTime { get; set; }
         public int Id { get; set; }
+        public bool? IsSent { get; set; }
+        public DateTime? AnswerDate { get; set; }
         public int FkMovieId { get; set; }
-        public int FkMovieHallId { get; set; }
     }
 }

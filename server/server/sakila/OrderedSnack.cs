@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace server.Models
+namespace server.sakila
 {
-    public partial class Ticket
+    public partial class OrderedSnack
     {
+        public int Amount { get; set; }
         public int Id { get; set; }
-        public int FkSessionId { get; set; }
+        public int FkSnackId { get; set; }
         public int FkOrderTableId { get; set; }
-        public int FkSeatId { get; set; }
     }
 }

@@ -38,6 +38,25 @@ namespace server.Controllers
             return Ok(x);
         }
 
+        [HttpGet("getData")]
+        public IActionResult getData()
+        {
+            var data = _context.MovieTheatres.Join(
+                _context.MovieHalls,
+                theatre => theatre.Id,
+                hall => hall.FkMovieTheatreId,
+                (theatre, hall) => new
+                {
+                    TheatreAddress = theatre.Address,
+                    Hall = hall.Number
+                }
+            ).ToArray();
+
+            var movies = _context.Movies.ToArray();
+
+            return Ok(TypeMerger.TypeMerger.Merge(data, movies));
+        }
+
         public bool validate(Session x)
         {
             bool isNonNull = !(x == null);

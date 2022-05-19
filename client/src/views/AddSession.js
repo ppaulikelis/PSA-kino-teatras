@@ -9,6 +9,15 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
+import sessionServices from '../services/manager/session.services';
+
+function createMovie(Title, Duration, StartDate, EndDate, Price, Icon, Genre, Id) {
+  return { Title, Duration, StartDate, EndDate, Price, Icon, Genre, Id };
+}
+
+function createHall(TheatreAddress, Hall) {
+  return { TheatreAddress, Hall };
+}
 
 export default function AddSession() {
   const [movies, setMovies] = useState([]);
@@ -17,6 +26,26 @@ export default function AddSession() {
   const [currentMovieHall, setCurrentMovieHall] = useState(0);
 
   useEffect(() => {
+    sessionServices.getData().then((res) => {
+      const hallList = res.data;
+      setMovieHalls(hallList.map((hall) => createHall(hall.TheatreAddress, hall.Hall)));
+      console.log(movieHalls);
+      const movies = res.data[1];
+      setMovies(
+        movies.map((movie) =>
+          createMovie(
+            movie.Title,
+            movie.Duration,
+            movie.StartDate,
+            movie.EndDate,
+            movie.Price,
+            movie.Icon,
+            movie.Genre,
+            movie.Id
+          )
+        )
+      );
+    });
     setMovies([]);
     setMovieHalls([]);
   }, []);
