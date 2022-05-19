@@ -2,10 +2,12 @@ import { Button, FormControl, InputLabel, MenuItem, Select, Typography } from '@
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import { genres } from '../constants';
+import subscriptionServices from '../services/manager/subscription.services';
 
 export default function SubscribeNews() {
   const [showSelect, setShowSelect] = useState(false);
   const [currentSelect, setCurrentSelect] = useState(-1);
+  const userId = 1;
 
   const selectSubscribe = () => {
     setShowSelect(true);
@@ -13,6 +15,9 @@ export default function SubscribeNews() {
 
   const selectDecision = () => {
     console.log(currentSelect);
+    subscriptionServices.addSubscription(currentSelect, userId).then((res) => {
+      alert(res.status == 200 ? 'Subscription added successfully.' : 'Error during add.');
+    });
   };
 
   return (

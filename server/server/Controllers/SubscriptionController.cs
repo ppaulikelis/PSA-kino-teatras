@@ -38,7 +38,7 @@ namespace server.Controllers
             return Ok(x);
         }
 
-        public bool validate(Subscription x)
+        public bool validate(Genre x)
         {
             bool isNonNull = !(x == null);
             bool containsNullProperties = x.GetType().GetProperties()
@@ -48,17 +48,18 @@ namespace server.Controllers
             return isNonNull && !containsNullProperties;
         }
 
-        [HttpPost]
-        public IActionResult addSubscription(Subscription x)
+        [HttpPost("{genre}/{id}")]
+        public IActionResult addSubscription(int genre, int id)
         {
-            bool isValid = validate(x);
+            var g = _context.Genres.Where(g => g.Id == genre).FirstOrDefault();
+            bool isValid = validate(g);
             if (!isValid)
             {
                 return BadRequest();
             }
 
-            var newX = new Subscription(x.IsSent, x.AnswerDate, x.FkMovieId);
-            _context.Subscriptions.Add(newX);
+            var c = _context.Clients.Where(c => c.Id == id).FirstOrDefault();
+            c.FavouriteGenre = genre;
             _context.SaveChanges();
 
             return Ok();
