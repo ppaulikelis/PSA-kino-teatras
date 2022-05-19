@@ -2,6 +2,7 @@ import { Button, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import hallServices from '../services/manager/hall.services';
 
 export default function AddMovieHall() {
   const { theaterid } = useParams();
@@ -13,7 +14,9 @@ export default function AddMovieHall() {
       FkMovieTheatreId: theaterid,
       Number: data.get('number')
     };
-    console.log(movieHall);
+    hallServices.add(movieHall).then((res) => {
+      alert(res.status == 200 ? 'Movie hall added successfully.' : 'Error during add.');
+    });
     navigate('/manager/moviehalls/addseats/xxxx');
   };
 

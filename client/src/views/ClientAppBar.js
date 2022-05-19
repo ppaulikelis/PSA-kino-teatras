@@ -21,6 +21,14 @@ const pages = [
   {
     name: 'Create order',
     url: 'createorder'
+  },
+  {
+    name: 'View Order',
+    url: 'order'
+  },
+  {
+    name: 'Delete Order',
+    url: 'deleteorder'
   }
 ];
 const settings = ['Account', 'Log out'];

@@ -17,13 +17,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import { Button, TableHead, Typography } from '@mui/material';
+import theaterServices from '../services/manager/theater.services';
 
-const tempData = [
-  {
-    Id: 333,
-    Address: 'Address'
-  }
-];
+function createData(Id, Address) {
+  return { Id, Address };
+}
 
 export default function MovieTheaterList() {
   const [movieTheaters, setMovieTheaters] = useState([]);
@@ -33,7 +31,11 @@ export default function MovieTheaterList() {
 
   useEffect(() => {
     //api call
-    setMovieTheaters(tempData);
+    theaterServices.get().then((res) => {
+      const theaterList = res.data;
+      console.log(res.data);
+      setMovieTheaters(theaterList.map((theater) => createData(theater.Id, theater.Address)));
+    });
   }, []);
 
   const selectDeletion = (id) => {
@@ -47,7 +49,10 @@ export default function MovieTheaterList() {
 
   const confirmDelete = () => {
     //api call
-    console.log(selectedId);
+    theaterServices.delete(selectedId).then((res) => {
+      alert(res.status == 200 ? 'Movie theatre deleted successfully.' : 'Error during deletion.');
+      window.location.reload(false);
+    });
     setSelectedId(-1);
     setOpen(false);
   };

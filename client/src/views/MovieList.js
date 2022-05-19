@@ -124,10 +124,9 @@ export default function MovieList() {
   const confirmDelete = () => {
     //api call
     managerServices.delete(selectedId).then((res) => {
-      alert(res.status == 200 ? 'Filmas sėkmingai pašalintas.' : 'Įvyko klaida.');
+      alert(res.status == 200 ? 'Movie deleted successfully.' : 'Error during deletion.');
       window.location.reload(false);
     });
-    //window.location.reload(false);
     setSelectedId(-1);
     setOpen(false);
   };

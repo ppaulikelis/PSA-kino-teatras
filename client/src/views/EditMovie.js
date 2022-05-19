@@ -109,7 +109,7 @@ export default function EditMovie() {
     formData.append('file', JSON.stringify(movie));
     formData.append('file', photo);
     managerServices.edit(formData).then((res) => {
-      alert(res.status == 200 ? 'Filmas sėkmingai atnaujintas.' : 'Įvyko klaida.');
+      alert(res.status == 200 ? 'Movie updated successfully.' : 'Error during edit.');
     });
   };
 

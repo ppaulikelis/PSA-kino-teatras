@@ -2,27 +2,31 @@ import { Button, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-
-const tempMovieHall = {
-  Number: 1,
-  Id: 666,
-  FkMovieTheatreId: 333
-};
+import hallServices from '../services/manager/hall.services';
 
 export default function EditMovieHall() {
   const { moviehallid } = useParams();
-  const [movieHall, setMovieHall] = useState({});
+  const [movieHall, setMovieHall] = useState(createData(-1));
   const navigate = useNavigate();
+
+  function createData(Number, Id, FkMovieTheatreId) {
+    return { Number, Id, FkMovieTheatreId };
+  }
 
   useEffect(() => {
     //api call
-    console.log(moviehallid);
-    setMovieHall(tempMovieHall);
+    hallServices.getHall(moviehallid).then((res) => {
+      const hall = res.data;
+      setMovieHall(createData(hall.Number, hall.Id, hall.FkMovieTheatreId));
+    });
+    setMovieHall(movieHall);
   }, []);
 
   const submit = (event) => {
     event.preventDefault();
-    console.log(movieHall);
+    hallServices.edit(movieHall).then((res) => {
+      alert(res.status == 200 ? 'Movie hall updated successfully.' : 'Error during edit.');
+    });
   };
 
   return (
@@ -38,6 +42,7 @@ export default function EditMovieHall() {
           inputProps={{ min: 1, max: 999, step: 1 }}
           fullWidth
           value={movieHall.Number}
+          focused={true}
           onChange={(event) => setMovieHall({ ...movieHall, Number: event.target.value })}
           required
         />
