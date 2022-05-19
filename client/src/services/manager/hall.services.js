@@ -4,7 +4,7 @@ const API_URL = 'http://localhost:6310/api/moviehall';
 
 class HallService {
   get(id) {
-    return axios.get(API_URL, id);
+    return axios.get(API_URL + '/get/' + id);
   }
   add(hall) {
     return axios.post(API_URL, hall);

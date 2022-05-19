@@ -31,20 +31,20 @@ namespace server.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public IActionResult showMovieHallList()
+        [HttpGet("get/{id}")]
+        public IActionResult showMovieHallList(int id)
         {
-            var x = _context.MovieHalls.ToList();
+            var x = _context.MovieHalls.Where(x=> x.FkMovieTheatreId == id).ToList();
             return Ok(x);
         }
 
-        [Route("api/[controller]/movieTheatres")]
-        [HttpGet]
-        public IActionResult getMovieTheatres(int id)
-        {
-            var x = _context.MovieTheatres.Where(x => x.Id == id).ToList();
-            return Ok(x);
-        }
+        //[Route("api/[controller]/movieTheatres")]
+        //[HttpGet]
+        //public IActionResult getMovieTheatres(int id)
+        //{
+        //    var x = _context.MovieTheatres.Where(x => x.Id == id).ToList();
+        //    return Ok(x);
+        //}
 
         public bool validate(MovieHall x)
         {

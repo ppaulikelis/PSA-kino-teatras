@@ -32,6 +32,7 @@ export default function MovieHallList() {
 
   useEffect(() => {
     //api call
+    console.log(theaterid);
     hallServices.get(theaterid).then((res) => {
       const hallList = res.data;
       setMovieHalls(hallList.map((hall) => createData(hall.Number, hall.Id)));
