@@ -19,8 +19,8 @@ import EditSession from './EditSession';
 import SnacksList from './SnacksList';
 import AddSnack from './AddSnack';
 import EditSnack from './EditSnack';
-import SeatTypeList from './SeatTypeList';
-import AddSeatType from './AddSeatType';
+import ChairTypeList from './ChairTypeList';
+import AddChairType from './AddChairType';
 import Payment from './Payment';
 
 export default function ManagerDashboard() {
@@ -53,8 +53,8 @@ export default function ManagerDashboard() {
             <Route path="/snacks/addsnack" element={<AddSnack />} />
             <Route path="/snacks/editsnack/:id" element={<EditSnack />} />
             {/* Seat type */}
-            <Route path="/seattypes" element={<SeatTypeList />} />
-            <Route path="/seattypes/addseattype" element={<AddSeatType />} />
+            <Route path="/chairtypes" element={<ChairTypeList />} />
+            <Route path="/chairtypes/addchairtype" element={<AddChairType />} />
             {/* Payment */}
             <Route path="/payment" element={<Payment />} />
           </Routes>
