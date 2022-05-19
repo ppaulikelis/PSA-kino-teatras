@@ -1,20 +1,15 @@
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import seatServices from '../services/manager/seat.serivces';
 
-const chairTypes = [
-  {
-    Id: 1,
-    Title: 'Test'
-  },
-  {
-    Id: 2,
-    Title: 'Another'
-  }
-];
+function createData(Title, Price, Id) {
+  return { Title, Price, Id };
+}
 
 export default function EditSeats() {
+  const [chairTypes, setChairTypes] = useState([]);
   const { moviehallid } = useParams();
   const numberOfRows = 4;
   const numberOfColumns = 12;
@@ -30,6 +25,27 @@ export default function EditSeats() {
       });
     })
   );
+
+  useEffect(() => {
+    //api call
+    seatServices.getData().then((res) => {
+      const chairTypes = res.data;
+      console.log(chairTypes);
+      setChairTypes(chairTypes.map((chair) => createData(chair.Title, chair.Price, chair.Id)));
+    });
+
+    seatServices.getSeats(moviehallid).then((res) => {
+      const newSeats = res.data;
+      console.log(newSeats);
+      setSeats(newSeats);
+    });
+  }, []);
+
+  const editSeat = () => {
+    seatServices.edit(seats).then((res) => {
+      alert(res.status == 200 ? 'Seats edited successfully.' : 'Error during edit.');
+    });
+  };
 
   const handleSeatChange = (row, column, type) => {
     const seat = seats[row][column];
@@ -89,7 +105,7 @@ export default function EditSeats() {
           color="primary"
           variant="contained"
           sx={{ marginLeft: 'auto' }}
-          onClick={() => console.log(seats)}>
+          onClick={editSeat}>
           Edit
         </Button>
       </Box>

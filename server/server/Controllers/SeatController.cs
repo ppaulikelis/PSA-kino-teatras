@@ -86,48 +86,55 @@ namespace server.Controllers
         }
 
         [HttpPut]
-        public IActionResult editSeat(Seat x)
+        public IActionResult editSeat(List<List<Seat>> x)
         {
-            bool isValid = validate(x);
-            if (!isValid)
+            bool isValid = true;
+            foreach (var row in x)
             {
-                return BadRequest("Duomenys nėra tinkami.");
+                foreach (var val in row)
+                {
+                    if (!validate(val))
+                    {
+                        return BadRequest();
+                    }
+                }
             }
 
-            var xToEdit = _context.Seats.FirstOrDefault(xToEdit => xToEdit.Id == xToEdit.Id);
-            if (xToEdit == null)
+            foreach (var row in x)
             {
-                return NotFound();
+                foreach (var val in row)
+                {
+                    var xToEdit = _context.Seats.FirstOrDefault(xToEdit => xToEdit.Id == val.Id);
+                    if (xToEdit == null)
+                    {
+                        return NotFound();
+                    }
+                    xToEdit.Row = val.Row;
+                    xToEdit.Number = val.Number;
+                    xToEdit.FkChairTypeId = val.FkChairTypeId;
+                }
             }
-            xToEdit.Row = x.Row;
-            xToEdit.Number = x.Number;
             _context.SaveChanges();
 
             return Ok();
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult deleteMovieTheatre(int id)
+        [HttpGet("{hallid}")]
+        public IActionResult GetById(int hallid)
         {
-            var x = _context.MovieTheatres.FirstOrDefault(x => x.Id == id);
+            var x = _context.Seats.Where(x => x.FkMovieHallId == hallid).ToList();
             if (x == null)
             {
                 return BadRequest();
             }
-            _context.MovieTheatres.Remove(x);
-            _context.SaveChanges();
-            return Ok();
-        }
 
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
-        {
-            var x = _context.Seats.Where(x => x.Id == id).FirstOrDefault();
-            if (x == null)
-            {
-                return BadRequest();
-            }
-            return Ok(x);
+            var result = x
+                .OrderBy(o => o.Row)
+                .GroupBy(x => x.Row)
+                .Select(chunk => chunk.OrderBy(o => o.Number).ToArray())
+                .ToArray();
+
+            return Ok(result);
         }
     }
 }

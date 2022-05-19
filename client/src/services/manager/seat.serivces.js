@@ -12,5 +12,8 @@ class SeatService {
   edit(seat) {
     return axios.put(API_URL, seat);
   }
+  getSeats(hallid) {
+    return axios.get(API_URL + '/' + hallid);
+  }
 }
 export default new SeatService();

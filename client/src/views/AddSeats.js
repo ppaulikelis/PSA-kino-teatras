@@ -31,7 +31,6 @@ export default function AddSeats() {
     seatServices.getData().then((res) => {
       const chairTypes = res.data;
       setChairTypes(chairTypes.map((chair) => createData(chair.Title, chair.Price, chair.Id)));
-      print(chairTypes);
     });
   }, []);
 
