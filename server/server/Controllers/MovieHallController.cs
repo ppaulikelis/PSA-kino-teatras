@@ -69,7 +69,7 @@ namespace server.Controllers
             _context.MovieHalls.Add(newX);
             _context.SaveChanges();
 
-            return Ok();
+            return Ok(newX.Id);
         }
 
         [HttpPut]

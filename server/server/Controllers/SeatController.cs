@@ -39,14 +39,12 @@ namespace server.Controllers
             return Ok(x);
         }
 
-        [Route("api/[controller]/data")]
-        [HttpGet]
+        [HttpGet("getData")]
         public IActionResult getData()
         {
             var x = _context.ChairTypes.ToList();
-            var y = _context.MovieHalls.Max(x => x.Id);
 
-            return Ok(TypeMerger.TypeMerger.Merge(x,y));
+            return Ok(x);
         }
 
         public bool validate(Seat x)
@@ -60,16 +58,28 @@ namespace server.Controllers
         }
 
         [HttpPost]
-        public IActionResult addSeat(Seat x)
+        public IActionResult addSeat(List<List<Seat>> x)
         {
-            bool isValid = validate(x);
-            if (!isValid)
+            bool isValid = true;
+            foreach(var row in x)
             {
-                return BadRequest();
+                foreach (var val in row)
+                {
+                    if (!validate(val))
+                    {
+                        return BadRequest();
+                    }
+                }
             }
 
-            var newX = new Seat() { Row = x.Row, Number = x.Number, FkMovieHallId = x.FkMovieHallId, FkChairTypeId = x.FkChairTypeId };
-            _context.Seats.Add(newX);
+            foreach (var row in x)
+            {
+                foreach (var val in row)
+                {
+                    var newX = new Seat() { Row = val.Row, Number = val.Number, FkMovieHallId = val.FkMovieHallId, FkChairTypeId = val.FkChairTypeId };
+                    _context.Seats.Add(newX);
+                }
+            }
             _context.SaveChanges();
 
             return Ok();

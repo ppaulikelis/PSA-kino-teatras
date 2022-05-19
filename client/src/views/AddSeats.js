@@ -1,20 +1,15 @@
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import seatServices from '../services/manager/seat.serivces';
 
-const chairTypes = [
-  {
-    Id: 1,
-    Title: 'Test'
-  },
-  {
-    Id: 2,
-    Title: 'Another'
-  }
-];
+function createData(Title, Price, Id) {
+  return { Title, Price, Id };
+}
 
 export default function AddSeats() {
+  const [chairTypes, setChairTypes] = useState([]);
   const { moviehallid } = useParams();
   const numberOfRows = 4;
   const numberOfColumns = 12;
@@ -30,6 +25,21 @@ export default function AddSeats() {
       });
     })
   );
+
+  useEffect(() => {
+    //api call
+    seatServices.getData().then((res) => {
+      const chairTypes = res.data;
+      setChairTypes(chairTypes.map((chair) => createData(chair.Title, chair.Price, chair.Id)));
+      print(chairTypes);
+    });
+  }, []);
+
+  const addSeat = () => {
+    seatServices.add(seats).then((res) => {
+      alert(res.status == 200 ? 'Seats added successfully.' : 'Error during add.');
+    });
+  };
 
   const handleSeatChange = (row, column, type) => {
     const seat = seats[row][column];
@@ -89,7 +99,7 @@ export default function AddSeats() {
           color="primary"
           variant="contained"
           sx={{ marginLeft: 'auto' }}
-          onClick={() => console.log(seats)}>
+          onClick={addSeat}>
           Add
         </Button>
       </Box>

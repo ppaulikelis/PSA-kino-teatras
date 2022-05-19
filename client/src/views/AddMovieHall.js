@@ -15,9 +15,8 @@ export default function AddMovieHall() {
       Number: data.get('number')
     };
     hallServices.add(movieHall).then((res) => {
-      alert(res.status == 200 ? 'Movie hall added successfully.' : 'Error during add.');
+      navigate('/manager/moviehalls/addseats/' + res.data);
     });
-    navigate('/manager/moviehalls/addseats/xxxx');
   };
 
   return (
