@@ -33,7 +33,7 @@ export default function EditSnack() {
     setSnack(tempSnack);
   }, []);
 
-  const submit = (event) => {
+  const editSnack = (event) => {
     event.preventDefault();
     console.log(snack);
   };
@@ -43,7 +43,7 @@ export default function EditSnack() {
       <Typography variant="h4" component="div" mb={3} align="center">
         Edit snack
       </Typography>
-      <Box component="form" onSubmit={submit}>
+      <Box component="form" onSubmit={editSnack}>
         <TextField
           name="title"
           label="Title"

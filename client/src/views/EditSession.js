@@ -26,7 +26,7 @@ export default function EditSession() {
     setCurrentMovieHall(1);
   }, []);
 
-  const submit = (event) => {
+  const editSession = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const session = {
@@ -42,7 +42,7 @@ export default function EditSession() {
       <Typography variant="h4" component="div" mb={3} align="center">
         Edit session
       </Typography>
-      <Box component="form" onSubmit={submit}>
+      <Box component="form" onSubmit={editSession}>
         <FormControl fullWidth>
           <InputLabel id="title-label">Title</InputLabel>
           <Select
