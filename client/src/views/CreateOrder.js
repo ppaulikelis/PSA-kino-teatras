@@ -2,6 +2,7 @@ import { Button, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import orderTableServices from '../services/manager/orderTable.services';
 
 export default function CreateOrder() {
   const navigate = useNavigate();
@@ -10,8 +11,17 @@ export default function CreateOrder() {
     const orderid = sessionStorage.getItem('orderid');
     if (orderid == null) {
       //api call
-      const res = 9999;
-      sessionStorage.setItem('orderid', res);
+      const orderTable = {
+        OrderDate: new Date(),
+        IsPaid: false,
+        AnswerDate: null,
+        FkClientId: 1
+      };
+      let id;
+      orderTableServices.add(orderTable).then((res) => {
+        id = res.data().Id;
+      });
+      sessionStorage.setItem('orderid', id);
     }
   }, []);
   return (
