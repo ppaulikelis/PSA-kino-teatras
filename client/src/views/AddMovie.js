@@ -91,7 +91,7 @@ export default function AddMovie() {
     formData.append('file', JSON.stringify(movie));
     formData.append('file', photo);
     managerServices.add(formData).then((res) => {
-      alert(res.status == 200 ? 'Filmas sėkmingai pridėtas.' : 'Įvyko klaida.');
+      alert(res.status == 200 ? 'Movie added successfully.' : 'Error during add.');
     });
   };
 
