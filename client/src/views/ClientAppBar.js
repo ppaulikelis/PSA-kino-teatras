@@ -17,6 +17,14 @@ const pages = [
   {
     name: 'Subscribe news',
     url: 'subscribenews'
+  },
+  {
+    name: 'View Order',
+    url: 'order'
+  },
+  {
+    name: 'Delete Order',
+    url: 'deleteorder'
   }
 ];
 const settings = ['Account', 'Log out'];
