@@ -11,43 +11,33 @@ import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import sessionServices from '../services/manager/session.services';
 
-function createMovie(Title, Duration, StartDate, EndDate, Price, Icon, Genre, Id) {
-  return { Title, Duration, StartDate, EndDate, Price, Icon, Genre, Id };
+function createMovie(Title, Id) {
+  return { Title, Id };
 }
 
-function createHall(TheatreAddress, Hall) {
-  return { TheatreAddress, Hall };
+function createHall(TheatreAddress, Hall, HallId) {
+  return { TheatreAddress, Hall, HallId };
 }
 
 export default function AddSession() {
-  const [movies, setMovies] = useState([]);
-  const [movieHalls, setMovieHalls] = useState([]);
-  const [currentMovie, setCurrentMovie] = useState(0);
-  const [currentMovieHall, setCurrentMovieHall] = useState(0);
+  const [movies, setMovies] = useState([createMovie('', -1)]);
+  const [movieHalls, setMovieHalls] = useState([createHall('', -1, -1)]);
+  const [currentMovie, setCurrentMovie] = useState(-1);
+  const [currentMovieHall, setCurrentMovieHall] = useState(-1);
 
   useEffect(() => {
-    sessionServices.getData().then((res) => {
+    sessionServices.getHalls().then((res) => {
       const hallList = res.data;
-      setMovieHalls(hallList.map((hall) => createHall(hall.TheatreAddress, hall.Hall)));
-      console.log(movieHalls);
-      const movies = res.data[1];
-      setMovies(
-        movies.map((movie) =>
-          createMovie(
-            movie.Title,
-            movie.Duration,
-            movie.StartDate,
-            movie.EndDate,
-            movie.Price,
-            movie.Icon,
-            movie.Genre,
-            movie.Id
-          )
-        )
+      setMovieHalls(
+        hallList.map((hall) => createHall(hall.TheatreAddress, hall.Hall, hall.HallId))
       );
+      console.log(hallList);
     });
-    setMovies([]);
-    setMovieHalls([]);
+    sessionServices.getMovies().then((res) => {
+      const movieList = res.data;
+      setMovies(movieList.map((movie) => createMovie(movie.Title, movie.Id)));
+      console.log(movieList);
+    });
   }, []);
 
   const submit = (event) => {
@@ -58,7 +48,11 @@ export default function AddSession() {
       FkMovieId: currentMovie,
       FkMovieHallId: currentMovieHall
     };
+
     console.log(session);
+    sessionServices.addSession(session).then((res) => {
+      alert(res.status == 200 ? 'Session added successfully.' : 'Error during add.');
+    });
   };
 
   return (
@@ -68,11 +62,12 @@ export default function AddSession() {
       </Typography>
       <Box component="form" onSubmit={submit}>
         <FormControl fullWidth>
-          <InputLabel id="title-label">Title</InputLabel>
+          <InputLabel id="title-label">Movie title</InputLabel>
           <Select
             labelId="title-label"
             id="title"
             value={currentMovie}
+            focused
             onChange={(event) => setCurrentMovie(event.target.value)}
             label="Title"
             required>
@@ -86,17 +81,18 @@ export default function AddSession() {
         <br />
         <br />
         <FormControl fullWidth>
-          <InputLabel id="hall-label">Hall</InputLabel>
+          <InputLabel id="hall-label">Theatre address and hall</InputLabel>
           <Select
             labelId="hall-label"
             id="hall"
             value={currentMovieHall}
+            focused
             onChange={(event) => setCurrentMovieHall(event.target.value)}
             label="Hall"
             required>
             {movieHalls.map((movieHall, index) => (
-              <MenuItem key={index} value={movieHall.Id}>
-                {movieHall.Number}
+              <MenuItem key={index} value={movieHall.HallId}>
+                {movieHall.TheatreAddress + ' | ' + movieHall.Hall}
               </MenuItem>
             ))}
           </Select>

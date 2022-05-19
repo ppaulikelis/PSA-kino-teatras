@@ -38,8 +38,8 @@ namespace server.Controllers
             return Ok(x);
         }
 
-        [HttpGet("getData")]
-        public IActionResult getData()
+        [HttpGet("getHalls")]
+        public IActionResult getHalls()
         {
             var data = _context.MovieTheatres.Join(
                 _context.MovieHalls,
@@ -48,14 +48,21 @@ namespace server.Controllers
                 (theatre, hall) => new
                 {
                     TheatreAddress = theatre.Address,
-                    Hall = hall.Number
+                    Hall = hall.Number,
+                    HallId = hall.Id
                 }
             ).ToArray();
 
-            var movies = _context.Movies.ToArray();
-
-            return Ok(TypeMerger.TypeMerger.Merge(data, movies));
+            return Ok(data);
         }
+
+        [HttpGet("getMovies")]
+        public IActionResult getMovies()
+        {
+            var movies = _context.Movies;
+            return Ok(movies);
+        }
+
 
         public bool validate(Session x)
         {

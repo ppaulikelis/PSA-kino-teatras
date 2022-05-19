@@ -6,10 +6,14 @@ class sessionService {
   get() {
     return axios.get(API_URL);
   }
-  getData() {
-    return axios.get(API_URL + '/getData');
+  getHalls() {
+    return axios.get(API_URL + '/getHalls');
   }
-  add(session) {
+  getMovies() {
+    return axios.get(API_URL + '/getMovies');
+  }
+
+  addSession(session) {
     return axios.post(API_URL, session);
   }
   delete(id) {
