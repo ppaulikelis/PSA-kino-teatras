@@ -39,8 +39,8 @@ const pages = [
     url: '/manager/elections'
   },
   {
-    name: 'Seat Types',
-    url: '/manager/seattypes'
+    name: 'Chair Types',
+    url: '/manager/chairtypes'
   }
 ];
 const settings = ['Account', 'Log out'];
