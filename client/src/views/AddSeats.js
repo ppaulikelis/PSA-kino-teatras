@@ -34,7 +34,7 @@ export default function AddSeats() {
     });
   }, []);
 
-  const addSeat = () => {
+  const submit = () => {
     seatServices.add(seats).then((res) => {
       alert(res.status == 200 ? 'Seats added successfully.' : 'Error during add.');
     });
@@ -98,7 +98,7 @@ export default function AddSeats() {
           color="primary"
           variant="contained"
           sx={{ marginLeft: 'auto' }}
-          onClick={addSeat}>
+          onClick={submit}>
           Add
         </Button>
       </Box>
