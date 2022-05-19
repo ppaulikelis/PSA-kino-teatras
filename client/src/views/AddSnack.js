@@ -9,40 +9,9 @@ import {
   Typography
 } from '@mui/material';
 import React, { useState } from 'react';
+import { sizes, snackTypes } from '../constants';
+import snackServices from '../services/manager/hall.services';
 
-const snackTypes = [
-  {
-    id: 1,
-    name: 'Drink'
-  },
-  {
-    id: 2,
-    name: 'Other'
-  },
-  {
-    id: 3,
-    name: 'Sweet'
-  },
-  {
-    id: 4,
-    name: 'Salty'
-  }
-];
-
-const sizes = [
-  {
-    id: 1,
-    name: 'large'
-  },
-  {
-    id: 2,
-    name: 'medium'
-  },
-  {
-    id: 3,
-    name: 'small'
-  }
-];
 export default function AddSnack() {
   const [currentSnackType, setCurrentSnackType] = useState('');
   const [currentSize, setCurrentSize] = useState('');
@@ -54,6 +23,7 @@ export default function AddSnack() {
     setCurrentSize(event.target.value);
     console.log(currentSize);
   };
+
   const submit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -63,7 +33,9 @@ export default function AddSnack() {
       Price: data.get('price'),
       Size: currentSize
     };
-    console.log(snack);
+    snackServices.add(snack).then((res) => {
+      alert(res.status == 200 ? 'Snack added successfully.' : 'Error during add.');
+    });
   };
 
   return (

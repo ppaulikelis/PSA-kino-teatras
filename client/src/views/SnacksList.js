@@ -17,16 +17,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import { Button, TableHead, Typography } from '@mui/material';
+import snackServices from '../services/manager/hall.services';
 
-const tempData = [
-  {
-    Id: 333,
-    Title: 'pavadinimas',
-    Type: 0,
-    Price: 11,
-    Size: 0
-  }
-];
+function createData(Title, Price, Type, Size, Id) {
+  return { Title, Price, Type, Size, Id };
+}
 
 export default function SnacksList() {
   const [snacks, setSnacks] = useState([]);
@@ -36,7 +31,14 @@ export default function SnacksList() {
 
   useEffect(() => {
     //api call
-    setSnacks(tempData);
+    snackServices.get().then((res) => {
+      const snackList = res.data;
+      setSnacks(
+        snackList.map((snack) =>
+          createData(snack.Title, snack.Price, snack.Type, snack.Size, snack.Id)
+        )
+      );
+    });
   }, []);
 
   const selectDeletion = (id) => {
@@ -50,7 +52,10 @@ export default function SnacksList() {
 
   const confirmDelete = () => {
     //api call
-    console.log(selectedId);
+    snackServices.delete(selectedId).then((res) => {
+      alert(res.status == 200 ? 'Snack deleted successfully.' : 'Error during deletion.');
+      window.location.reload(false);
+    });
     setSelectedId(-1);
     setOpen(false);
   };

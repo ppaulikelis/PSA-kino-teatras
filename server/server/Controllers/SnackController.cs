@@ -18,13 +18,13 @@ namespace server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SnacksController : Controller
+    public class SnackController : Controller
     {
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _env;
         private readonly DatabaseContext _context;
 
-        public SnacksController(IConfiguration configuration, IWebHostEnvironment env, DatabaseContext context)
+        public SnackController(IConfiguration configuration, IWebHostEnvironment env, DatabaseContext context)
         {
             _configuration = configuration;
             _env = env;
@@ -57,8 +57,7 @@ namespace server.Controllers
                 return BadRequest();
             }
 
-            var newX = new Snack() { Price = x.Price, Size = x.Size, Title = x.Title, Type = x.Type };
-            _context.Snacks.Add(newX);
+            _context.Snacks.Add(x);
             _context.SaveChanges();
 
             return Ok();

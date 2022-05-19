@@ -52,7 +52,10 @@ export default function SessionList() {
 
   const confirmDelete = () => {
     //api call
-    console.log(selectedId);
+    sessionServices.delete(selectedId).then((res) => {
+      alert(res.status == 200 ? 'Session deleted successfully.' : 'Error during deletion.');
+      window.location.reload(false);
+    });
     setSelectedId(-1);
     setOpen(false);
   };
