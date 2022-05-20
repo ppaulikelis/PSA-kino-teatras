@@ -22,7 +22,6 @@ export default function BuySnacks() {
 
   useEffect(() => {
     //api call
-    console.log('wat');
     orderTableServices.getSnacks().then((res) => {
       console.log(res.data);
       const listSnacks = res.data;
@@ -36,6 +35,9 @@ export default function BuySnacks() {
   }, []);
 
   const insertData = () => {
+    if (currentSnack == -1) {
+      return;
+    }
     const orderedSnack = {
       Amount: currentAmmount,
       FkSnackId: currentSnack,

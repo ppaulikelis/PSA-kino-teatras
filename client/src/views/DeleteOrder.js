@@ -5,6 +5,10 @@ import orderTableServices from '../services/manager/orderTable.services';
 
 export default function DeleteOrder() {
   const confirmDelete = () => {
+    if (sessionStorage.getItem('orderid') == null) {
+      alert('Order is not available');
+      return;
+    }
     orderTableServices.delete(sessionStorage.getItem('orderid')).then((res) => {
       alert(res.status == 200 ? 'Order deleted sucessfully.' : 'Error during delete.');
       if (res.status == 200) {
