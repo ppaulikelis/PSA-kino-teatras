@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 19, 2022 at 11:24 AM
+-- Generation Time: May 20, 2022 at 01:02 AM
 -- Server version: 5.7.36
 -- PHP Version: 7.4.26
 
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `client` (
 --
 
 INSERT INTO `client` (`watched_movie_count`, `favourite_genre`, `id`, `fk_User_id`) VALUES
-(0, 1, 1, 1);
+(0, 5, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -145,14 +145,14 @@ CREATE TABLE IF NOT EXISTS `movie` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`),
   KEY `genre` (`genre`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
 
 --
 -- Dumping data for table `movie`
 --
 
 INSERT INTO `movie` (`title`, `description`, `duration`, `start_date`, `end_date`, `price`, `icon`, `genre`, `id`) VALUES
-('shriek', 'dasdasdasd', 40, '2022-05-13', '2022-05-19', 40, '1652657851716.jpg', 1, 9);
+('SHREK', 'good', 40, '2022-05-05', '2022-05-21', 3, '1653004563499.jpg', 1, 10);
 
 -- --------------------------------------------------------
 
@@ -167,21 +167,14 @@ CREATE TABLE IF NOT EXISTS `movie_hall` (
   `fk_Movie_theatre_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_Movie_theatre_id` (`fk_Movie_theatre_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
 
 --
 -- Dumping data for table `movie_hall`
 --
 
 INSERT INTO `movie_hall` (`number`, `id`, `fk_Movie_theatre_id`) VALUES
-(0, 1, 2),
-(10, 2, 2),
-(69, 3, 2),
-(40, 5, 2),
-(67, 6, 2),
-(14, 7, 2),
-(55, 8, 2),
-(79, 9, 2);
+(420, 19, 7);
 
 -- --------------------------------------------------------
 
@@ -194,15 +187,14 @@ CREATE TABLE IF NOT EXISTS `movie_theatre` (
   `address` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
 
 --
 -- Dumping data for table `movie_theatre`
 --
 
 INSERT INTO `movie_theatre` (`address`, `id`) VALUES
-('test', 2),
-('huh', 3);
+('Studentu 67', 7);
 
 -- --------------------------------------------------------
 
@@ -213,13 +205,20 @@ INSERT INTO `movie_theatre` (`address`, `id`) VALUES
 DROP TABLE IF EXISTS `ordered_snack`;
 CREATE TABLE IF NOT EXISTS `ordered_snack` (
   `amount` int(11) NOT NULL,
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `fk_Snack_id` int(11) NOT NULL,
   `fk_Order_table_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `is_a_part_of` (`fk_Snack_id`),
   KEY `is_a_part` (`fk_Order_table_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+
+--
+-- Dumping data for table `ordered_snack`
+--
+
+INSERT INTO `ordered_snack` (`amount`, `id`, `fk_Snack_id`, `fk_Order_table_id`) VALUES
+(42, 2, 2, 5);
 
 -- --------------------------------------------------------
 
@@ -230,13 +229,21 @@ CREATE TABLE IF NOT EXISTS `ordered_snack` (
 DROP TABLE IF EXISTS `order_table`;
 CREATE TABLE IF NOT EXISTS `order_table` (
   `order_date` date NOT NULL,
-  `is_paid` tinyint(1) NOT NULL,
-  `answer_date` date NOT NULL,
+  `is_paid` tinyint(1) DEFAULT NULL,
+  `answer_date` date DEFAULT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `fk_Client_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `creates` (`fk_Client_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+
+--
+-- Dumping data for table `order_table`
+--
+
+INSERT INTO `order_table` (`order_date`, `is_paid`, `answer_date`, `id`, `fk_Client_id`) VALUES
+('0001-01-01', 0, '2022-05-20', 6, 0),
+('2022-05-19', NULL, NULL, 7, 1);
 
 -- --------------------------------------------------------
 
@@ -254,61 +261,61 @@ CREATE TABLE IF NOT EXISTS `seat` (
   PRIMARY KEY (`id`,`fk_Movie_hall_id`),
   KEY `fk_Movie_hall_id` (`fk_Movie_hall_id`),
   KEY `turi` (`fk_Chair_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
 
 --
 -- Dumping data for table `seat`
 --
 
 INSERT INTO `seat` (`row`, `number`, `id`, `fk_Movie_hall_id`, `fk_Chair_type_id`) VALUES
-(0, 0, 1, 9, 3),
-(2, 2, 2, 9, -1),
-(2, 3, 3, 9, -1),
-(2, 4, 4, 9, -1),
-(2, 5, 5, 9, -1),
-(2, 6, 6, 9, -1),
-(2, 7, 7, 9, -1),
-(2, 8, 8, 9, -1),
-(2, 9, 9, 9, -1),
-(2, 10, 10, 9, -1),
-(2, 1, 11, 9, -1),
-(2, 11, 12, 9, -1),
-(3, 1, 13, 9, -1),
-(3, 2, 14, 9, -1),
-(3, 3, 15, 9, -1),
-(3, 4, 16, 9, -1),
-(3, 5, 17, 9, -1),
-(3, 6, 18, 9, -1),
-(3, 7, 19, 9, -1),
-(3, 8, 20, 9, -1),
-(3, 9, 21, 9, -1),
-(3, 0, 22, 9, -1),
-(2, 0, 23, 9, -1),
-(1, 11, 24, 9, -1),
-(1, 10, 25, 9, -1),
-(0, 1, 26, 9, 1),
-(0, 2, 27, 9, 2),
-(0, 3, 28, 9, 3),
-(0, 4, 29, 9, -1),
-(0, 5, 30, 9, -1),
-(0, 6, 31, 9, -1),
-(0, 7, 32, 9, -1),
-(0, 8, 33, 9, -1),
-(0, 9, 34, 9, -1),
-(0, 10, 35, 9, -1),
-(0, 11, 36, 9, -1),
-(1, 0, 37, 9, -1),
-(1, 1, 38, 9, -1),
-(1, 2, 39, 9, -1),
-(1, 3, 40, 9, -1),
-(1, 4, 41, 9, -1),
-(1, 5, 42, 9, -1),
-(1, 6, 43, 9, -1),
-(1, 7, 44, 9, -1),
-(1, 8, 45, 9, -1),
-(1, 9, 46, 9, -1),
-(3, 10, 47, 9, -1),
-(3, 11, 48, 9, -1);
+(0, 0, 193, 19, 2),
+(2, 2, 194, 19, -1),
+(2, 3, 195, 19, -1),
+(2, 4, 196, 19, -1),
+(2, 5, 197, 19, -1),
+(2, 6, 198, 19, -1),
+(2, 7, 199, 19, 3),
+(2, 8, 200, 19, -1),
+(2, 9, 201, 19, 1),
+(2, 10, 202, 19, -1),
+(2, 1, 203, 19, -1),
+(2, 11, 204, 19, -1),
+(3, 1, 205, 19, -1),
+(3, 2, 206, 19, -1),
+(3, 3, 207, 19, -1),
+(3, 4, 208, 19, -1),
+(3, 5, 209, 19, -1),
+(3, 6, 210, 19, -1),
+(3, 7, 211, 19, -1),
+(3, 8, 212, 19, 1),
+(3, 9, 213, 19, -1),
+(3, 0, 214, 19, -1),
+(2, 0, 215, 19, -1),
+(1, 11, 216, 19, -1),
+(1, 10, 217, 19, 1),
+(0, 1, 218, 19, -1),
+(0, 2, 219, 19, -1),
+(0, 3, 220, 19, -1),
+(0, 4, 221, 19, -1),
+(0, 5, 222, 19, -1),
+(0, 6, 223, 19, -1),
+(0, 7, 224, 19, -1),
+(0, 8, 225, 19, -1),
+(0, 9, 226, 19, -1),
+(0, 10, 227, 19, -1),
+(0, 11, 228, 19, 1),
+(1, 0, 229, 19, -1),
+(1, 1, 230, 19, -1),
+(1, 2, 231, 19, -1),
+(1, 3, 232, 19, -1),
+(1, 4, 233, 19, -1),
+(1, 5, 234, 19, -1),
+(1, 6, 235, 19, -1),
+(1, 7, 236, 19, -1),
+(1, 8, 237, 19, 3),
+(1, 9, 238, 19, -1),
+(3, 10, 239, 19, -1),
+(3, 11, 240, 19, -1);
 
 -- --------------------------------------------------------
 
@@ -318,14 +325,21 @@ INSERT INTO `seat` (`row`, `number`, `id`, `fk_Movie_hall_id`, `fk_Chair_type_id
 
 DROP TABLE IF EXISTS `session`;
 CREATE TABLE IF NOT EXISTS `session` (
-  `start_time` date NOT NULL,
+  `start_time` time NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `fk_Movie_id` int(11) NOT NULL,
   `fk_Movie_hall_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `is_shown` (`fk_Movie_id`),
   KEY `has` (`fk_Movie_hall_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+
+--
+-- Dumping data for table `session`
+--
+
+INSERT INTO `session` (`start_time`, `id`, `fk_Movie_id`, `fk_Movie_hall_id`) VALUES
+('00:00:00', 3, 10, 19);
 
 -- --------------------------------------------------------
 
@@ -365,7 +379,14 @@ CREATE TABLE IF NOT EXISTS `snack` (
   PRIMARY KEY (`id`),
   KEY `type` (`type`),
   KEY `size` (`size`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+
+--
+-- Dumping data for table `snack`
+--
+
+INSERT INTO `snack` (`title`, `price`, `type`, `size`, `id`) VALUES
+('Onjon', 1, 3, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -404,21 +425,14 @@ CREATE TABLE IF NOT EXISTS `subscription` (
   `fk_Movie_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_Movie_id` (`fk_Movie_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
 
 --
 -- Dumping data for table `subscription`
 --
 
 INSERT INTO `subscription` (`id`, `is_sent`, `answer_date`, `fk_Movie_id`) VALUES
-(1, 0, NULL, 5),
-(2, 0, NULL, 6),
-(3, 0, NULL, 7),
-(4, 0, NULL, 8),
-(5, 0, NULL, 9),
-(6, 0, NULL, 10),
-(7, 0, NULL, 11),
-(8, 0, NULL, 12);
+(9, 0, NULL, 10);
 
 -- --------------------------------------------------------
 
@@ -428,14 +442,22 @@ INSERT INTO `subscription` (`id`, `is_sent`, `answer_date`, `fk_Movie_id`) VALUE
 
 DROP TABLE IF EXISTS `ticket`;
 CREATE TABLE IF NOT EXISTS `ticket` (
-  `amount` int(11) NOT NULL,
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `fk_Session_id` int(11) NOT NULL,
   `fk_Order_table_id` int(11) NOT NULL,
+  `fk_Seat_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `has` (`fk_Session_id`),
-  KEY `is_a_part_off` (`fk_Order_table_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+  KEY `is_a_part_off` (`fk_Order_table_id`),
+  KEY `fk_Seat_id` (`fk_Seat_id`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
+
+--
+-- Dumping data for table `ticket`
+--
+
+INSERT INTO `ticket` (`id`, `fk_Session_id`, `fk_Order_table_id`, `fk_Seat_id`) VALUES
+(1, 3, 5, 193);
 
 -- --------------------------------------------------------
 
