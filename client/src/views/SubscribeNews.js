@@ -14,6 +14,10 @@ export default function SubscribeNews() {
   };
 
   const selectDecision = () => {
+    if (currentSelect == -1) {
+      alert('Choose genre');
+      return;
+    }
     console.log(currentSelect);
     subscriptionServices.addSubscription(currentSelect, userId).then((res) => {
       alert(res.status == 200 ? 'Subscription added successfully.' : 'Error during add.');
