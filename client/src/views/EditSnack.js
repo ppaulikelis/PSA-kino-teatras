@@ -29,7 +29,7 @@ export default function EditSnack() {
     });
   }, []);
 
-  const submit = (event) => {
+  const editSnack = (event) => {
     event.preventDefault();
     snackServices.edit(snack).then((res) => {
       alert(res.status == 200 ? 'Snack edited successfully.' : 'Error during edit.');
@@ -42,7 +42,7 @@ export default function EditSnack() {
       <Typography variant="h4" component="div" mb={3} align="center">
         Edit snack
       </Typography>
-      <Box component="form" onSubmit={submit}>
+      <Box component="form" onSubmit={editSnack}>
         <TextField
           name="title"
           label="Title"
