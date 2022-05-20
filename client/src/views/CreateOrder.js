@@ -13,15 +13,14 @@ export default function CreateOrder() {
       //api call
       const orderTable = {
         OrderDate: new Date(),
-        IsPaid: false,
+        IsPaid: null,
         AnswerDate: null,
         FkClientId: 1
       };
-      let id;
       orderTableServices.add(orderTable).then((res) => {
-        id = res.data().Id;
+        const id = res.data;
+        sessionStorage.setItem('orderid', id);
       });
-      sessionStorage.setItem('orderid', id);
     }
   }, []);
   return (

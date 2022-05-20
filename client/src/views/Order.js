@@ -7,80 +7,26 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import { Button, TableHead, Typography } from '@mui/material';
-
-const tempFilmai = [
-  {
-    Id: 333,
-    Title: 'Filmas1',
-    StartTime: '1:38',
-    Price: 6.5,
-    Count: 6
-  }
-];
-
-const tempUzkandziai = [
-  {
-    Id: 333,
-    Title: 'Cola',
-    Type: 'drink',
-    Price: 12.58,
-    Count: 4
-  }
-];
+import orderTableServices from '../services/manager/orderTable.services';
 
 export default function Order() {
   const [movieObjects, setMovieObjects] = useState([]);
   const [snackObjects, setSnackObjects] = useState([]);
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     //api call
-    setMovieObjects(tempFilmai);
-    setSnackObjects(tempUzkandziai);
+    orderTableServices.getOrder(sessionStorage.getItem('orderid')).then((res) => {
+      const { tickets, snacks } = res.data;
+      setMovieObjects(tickets);
+      setSnackObjects(snacks);
+    });
   }, []);
-
-  const cancelDelete = () => {
-    setOpen(false);
-  };
-
-  const confirmDelete = () => {
-    //api call
-    console.log();
-    setOpen(false);
-  };
 
   return (
     <Box>
-      <Dialog
-        open={open}
-        onClose={cancelDelete}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description">
-        <DialogTitle id="alert-dialog-title">
-          {'Are you sure you want to delete this order?'}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Order will be deleted permanently
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button color="primary" onClick={cancelDelete}>
-            Cancel
-          </Button>
-          <Button color="error" autoFocus onClick={confirmDelete}>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
       <Typography variant="h4" component="div" mb={3} align="center">
         Order list
       </Typography>
@@ -98,7 +44,7 @@ export default function Order() {
                 <Typography component="div">Info</Typography>
               </TableCell>
               <TableCell align="right">
-                <Typography component="div">Sum</Typography>
+                <Typography component="div">Price</Typography>
               </TableCell>
               <TableCell align="right"></TableCell>
             </TableRow>
@@ -110,15 +56,21 @@ export default function Order() {
                   <Typography component="div">{movieObject.Title}</Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography component="div">{movieObject.Count}</Typography>
+                  <Typography component="div"></Typography>
                 </TableCell>
                 <TableCell align="right">
                   <Typography component="div">
-                    Starts: {movieObject.Count} <br></br>Ticket price: {movieObject.Price}
+                    Starts: {movieObject.StartTime} <br></br>Ticket info:{' '}
+                    {'Row: ' +
+                      movieObject.Row +
+                      ' Number: ' +
+                      movieObject.Number +
+                      ' Type: ' +
+                      movieObject.ChairType}
                   </Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography component="div">{movieObject.Count * movieObject.Price}</Typography>
+                  <Typography component="div">{movieObject.Price}</Typography>
                 </TableCell>
                 <TableCell align="right"></TableCell>
               </TableRow>
@@ -133,11 +85,11 @@ export default function Order() {
                 </TableCell>
                 <TableCell align="right">
                   <Typography component="div">
-                    Type: {snackObject.Type} <br></br>Price: {snackObject.Price}
+                    Type: {snackObject.Type} <br></br>Size: {snackObject.Size}
                   </Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography component="div">{snackObject.Count * snackObject.Price}</Typography>
+                  <Typography component="div">{snackObject.Price}</Typography>
                 </TableCell>
                 <TableCell align="right"></TableCell>
               </TableRow>

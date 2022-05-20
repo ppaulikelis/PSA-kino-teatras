@@ -9,6 +9,7 @@ import DeleteOrder from './DeleteOrder';
 import SubscribeNews from './SubscribeNews';
 import BuySnacks from './BuySnacks';
 import BuyTickets from './BuyTickets';
+import Payment from './Payment';
 
 export default function ClientDashboard() {
   return (
@@ -25,6 +26,7 @@ export default function ClientDashboard() {
             <Route path="/createorder/buytickets" element={<BuyTickets />} />
             <Route path="/order" element={<Order />} />
             <Route path="/deleteorder" element={<DeleteOrder />} />
+            <Route path="/order/payment" element={<Payment />} />
           </Routes>
         </Box>
       </Container>

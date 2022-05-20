@@ -2,361 +2,362 @@ import { Button, FormControl, Grid, InputLabel, MenuItem, Select, Typography } f
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import ChairIcon from '@mui/icons-material/Chair';
+import orderTableServices from '../services/manager/orderTable.services';
 
 function createMovie(Title, Id) {
   return { Title, Id };
 }
 
-function createSession(StarTime, Id, FkMovieId) {
-  return { StarTime, Id, FkMovieId };
+function createSession(StartTime, Id, FkMovieId) {
+  return { StartTime, Id, FkMovieId };
 }
 
-const seats = [
-  [
-    {
-      Row: 0,
-      Number: 0,
-      Id: 97,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 0,
-      Number: 1,
-      Id: 122,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 0,
-      Number: 2,
-      Id: 123,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 0,
-      Number: 3,
-      Id: 124,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 0,
-      Number: 4,
-      Id: 125,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 0,
-      Number: 5,
-      Id: 126,
-      FkMovieHallId: 11,
-      FkChairTypeId: 2
-    },
-    {
-      Row: 0,
-      Number: 6,
-      Id: 127,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 0,
-      Number: 7,
-      Id: 128,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 0,
-      Number: 8,
-      Id: 129,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 0,
-      Number: 9,
-      Id: 130,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 0,
-      Number: 10,
-      Id: 131,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 0,
-      Number: 11,
-      Id: 132,
-      FkMovieHallId: 11,
-      FkChairTypeId: 2
-    }
-  ],
-  [
-    {
-      Row: 1,
-      Number: 0,
-      Id: 133,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 1,
-      Number: 1,
-      Id: 134,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 1,
-      Number: 2,
-      Id: 135,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 1,
-      Number: 3,
-      Id: 136,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 1,
-      Number: 4,
-      Id: 137,
-      FkMovieHallId: 11,
-      FkChairTypeId: 3
-    },
-    {
-      Row: 1,
-      Number: 5,
-      Id: 138,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 1,
-      Number: 6,
-      Id: 139,
-      FkMovieHallId: 11,
-      FkChairTypeId: 2
-    },
-    {
-      Row: 1,
-      Number: 7,
-      Id: 140,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 1,
-      Number: 8,
-      Id: 141,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 1,
-      Number: 9,
-      Id: 142,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 1,
-      Number: 10,
-      Id: 121,
-      FkMovieHallId: 11,
-      FkChairTypeId: 2
-    },
-    {
-      Row: 1,
-      Number: 11,
-      Id: 120,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    }
-  ],
-  [
-    {
-      Row: 2,
-      Number: 0,
-      Id: 119,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 2,
-      Number: 1,
-      Id: 107,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 2,
-      Number: 2,
-      Id: 98,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 2,
-      Number: 3,
-      Id: 99,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 2,
-      Number: 4,
-      Id: 100,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 2,
-      Number: 5,
-      Id: 101,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 2,
-      Number: 6,
-      Id: 102,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 2,
-      Number: 7,
-      Id: 103,
-      FkMovieHallId: 11,
-      FkChairTypeId: 2
-    },
-    {
-      Row: 2,
-      Number: 8,
-      Id: 104,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 2,
-      Number: 9,
-      Id: 105,
-      FkMovieHallId: 11,
-      FkChairTypeId: 2
-    },
-    {
-      Row: 2,
-      Number: 10,
-      Id: 106,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 2,
-      Number: 11,
-      Id: 108,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    }
-  ],
-  [
-    {
-      Row: 3,
-      Number: 0,
-      Id: 118,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 3,
-      Number: 1,
-      Id: 109,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 3,
-      Number: 2,
-      Id: 110,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 3,
-      Number: 3,
-      Id: 111,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 3,
-      Number: 4,
-      Id: 112,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 3,
-      Number: 5,
-      Id: 113,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 3,
-      Number: 6,
-      Id: 114,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 3,
-      Number: 7,
-      Id: 115,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 3,
-      Number: 8,
-      Id: 116,
-      FkMovieHallId: 11,
-      FkChairTypeId: 2
-    },
-    {
-      Row: 3,
-      Number: 9,
-      Id: 117,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 3,
-      Number: 10,
-      Id: 143,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    },
-    {
-      Row: 3,
-      Number: 11,
-      Id: 144,
-      FkMovieHallId: 11,
-      FkChairTypeId: -1
-    }
-  ]
-];
+// const seats = [
+//   [
+//     {
+//       Row: 0,
+//       Number: 0,
+//       Id: 97,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 0,
+//       Number: 1,
+//       Id: 122,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 0,
+//       Number: 2,
+//       Id: 123,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 0,
+//       Number: 3,
+//       Id: 124,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 0,
+//       Number: 4,
+//       Id: 125,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 0,
+//       Number: 5,
+//       Id: 126,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: 2
+//     },
+//     {
+//       Row: 0,
+//       Number: 6,
+//       Id: 127,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 0,
+//       Number: 7,
+//       Id: 128,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 0,
+//       Number: 8,
+//       Id: 129,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 0,
+//       Number: 9,
+//       Id: 130,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 0,
+//       Number: 10,
+//       Id: 131,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 0,
+//       Number: 11,
+//       Id: 132,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: 2
+//     }
+//   ],
+//   [
+//     {
+//       Row: 1,
+//       Number: 0,
+//       Id: 133,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 1,
+//       Number: 1,
+//       Id: 134,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 1,
+//       Number: 2,
+//       Id: 135,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 1,
+//       Number: 3,
+//       Id: 136,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 1,
+//       Number: 4,
+//       Id: 137,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: 3
+//     },
+//     {
+//       Row: 1,
+//       Number: 5,
+//       Id: 138,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 1,
+//       Number: 6,
+//       Id: 139,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: 2
+//     },
+//     {
+//       Row: 1,
+//       Number: 7,
+//       Id: 140,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 1,
+//       Number: 8,
+//       Id: 141,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 1,
+//       Number: 9,
+//       Id: 142,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 1,
+//       Number: 10,
+//       Id: 121,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: 2
+//     },
+//     {
+//       Row: 1,
+//       Number: 11,
+//       Id: 120,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     }
+//   ],
+//   [
+//     {
+//       Row: 2,
+//       Number: 0,
+//       Id: 119,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 2,
+//       Number: 1,
+//       Id: 107,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 2,
+//       Number: 2,
+//       Id: 98,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 2,
+//       Number: 3,
+//       Id: 99,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 2,
+//       Number: 4,
+//       Id: 100,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 2,
+//       Number: 5,
+//       Id: 101,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 2,
+//       Number: 6,
+//       Id: 102,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 2,
+//       Number: 7,
+//       Id: 103,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: 2
+//     },
+//     {
+//       Row: 2,
+//       Number: 8,
+//       Id: 104,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 2,
+//       Number: 9,
+//       Id: 105,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: 2
+//     },
+//     {
+//       Row: 2,
+//       Number: 10,
+//       Id: 106,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 2,
+//       Number: 11,
+//       Id: 108,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     }
+//   ],
+//   [
+//     {
+//       Row: 3,
+//       Number: 0,
+//       Id: 118,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 3,
+//       Number: 1,
+//       Id: 109,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 3,
+//       Number: 2,
+//       Id: 110,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 3,
+//       Number: 3,
+//       Id: 111,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 3,
+//       Number: 4,
+//       Id: 112,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 3,
+//       Number: 5,
+//       Id: 113,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 3,
+//       Number: 6,
+//       Id: 114,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 3,
+//       Number: 7,
+//       Id: 115,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 3,
+//       Number: 8,
+//       Id: 116,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: 2
+//     },
+//     {
+//       Row: 3,
+//       Number: 9,
+//       Id: 117,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 3,
+//       Number: 10,
+//       Id: 143,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     },
+//     {
+//       Row: 3,
+//       Number: 11,
+//       Id: 144,
+//       FkMovieHallId: 11,
+//       FkChairTypeId: -1
+//     }
+//   ]
+// ];
 
 export default function BuyTickets() {
   const [step, setStep] = useState(0);
@@ -364,12 +365,24 @@ export default function BuyTickets() {
   const [currentMovie, setCurrentMovie] = useState(-1);
   const [sessions, setSessions] = useState([]);
   const [currentSession, setCurrentSession] = useState(-1);
-  const [selectedSeat, setSelectedSeat] = useState(-1);
 
   useEffect(() => {
     //api calls
-    setMovies([createMovie('Title 1', 1), createMovie('Title 2', 2)]);
-    setSessions([createSession('Session 1', 1, 1), createSession('Session 2', 2, 2)]);
+    orderTableServices.getMovies().then((res) => {
+      const movieList = res.data;
+      setMovies(movieList.map((movie) => createMovie(movie.Title, movie.Id)));
+      console.log(movieList);
+    });
+
+    orderTableServices.getSessions().then((res) => {
+      const sessionsList = res.data;
+      setSessions(
+        sessionsList.map((session) =>
+          createSession(session.StartTime, session.Id, session.FkMovieId)
+        )
+      );
+      console.log(sessionsList);
+    });
   }, []);
 
   const StepRenderer = () => {
@@ -394,13 +407,7 @@ export default function BuyTickets() {
           />
         );
       case 2:
-        return (
-          <SeatSelectionStep
-            selectedSeat={selectedSeat}
-            setSelectedSeat={setSelectedSeat}
-            selectSeat={selectSeat}
-          />
-        );
+        return <SeatSelectionStep currentSession={currentSession} />;
     }
   };
 
@@ -410,15 +417,6 @@ export default function BuyTickets() {
 
   const selectSession = () => {
     setStep(2);
-  };
-
-  const selectSeat = () => {
-    const ticket = {
-      FkSessionId: currentSession,
-      FkOrderTableId: sessionStorage.getItem('orderid'),
-      FkSeatId: selectedSeat
-    };
-    console.log(ticket);
   };
 
   return (
@@ -492,7 +490,7 @@ const SessionSelectStep = (props) => {
             .filter((session) => session.FkMovieId == currentMovie)
             .map((session, index) => (
               <MenuItem key={index} value={session.Id}>
-                {session.StarTime}
+                {session.StartTime}
               </MenuItem>
             ))}
         </Select>
@@ -514,7 +512,26 @@ const SessionSelectStep = (props) => {
 };
 
 const SeatSelectionStep = (props) => {
-  const { selectedSeat, setSelectedSeat, selectSeat } = props;
+  const { currentSession } = props;
+  const [seats, setSeats] = useState([]);
+  const [selectedSeat, setSelectedSeat] = useState(-1);
+  const selectSeat = () => {
+    const ticket = {
+      FkSessionId: currentSession,
+      FkOrderTableId: sessionStorage.getItem('orderid'),
+      FkSeatId: selectedSeat
+    };
+    orderTableServices.addTicket(ticket).then((res) => {
+      alert(res.status == 200 ? 'Ticket added successfully.' : 'Error during add.');
+    });
+  };
+  useEffect(() => {
+    //api call
+    orderTableServices.getSeats().then((res) => {
+      setSeats(res.data);
+    });
+    console.log(seats);
+  }, []);
   return (
     <>
       <Typography variant="h5" component="div" mb={3} align="left">

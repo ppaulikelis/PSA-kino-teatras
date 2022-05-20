@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { sizes, snackTypes } from '../constants';
-import snackServices from '../services/manager/hall.services';
+import snackServices from '../services/manager/snack.services';
 
 export default function AddSnack() {
   const [currentSnackType, setCurrentSnackType] = useState('');
@@ -33,7 +33,7 @@ export default function AddSnack() {
       Price: data.get('price'),
       Size: currentSize
     };
-    snackServices.add(snack).then((res) => {
+    snackServices.addSnack(snack).then((res) => {
       alert(res.status == 200 ? 'Snack added successfully.' : 'Error during add.');
     });
   };

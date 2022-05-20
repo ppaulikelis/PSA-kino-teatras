@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -8,24 +7,27 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import { Button, Typography } from '@mui/material';
+import orderTableServices from '../services/manager/orderTable.services';
 
 export default function Payment() {
-  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
-  const cancelPaying = () => {
+  const cancel = () => {
     setOpen(false);
   };
 
-  const confirmPayment = () => {
-    setOpen(false), navigate('paypalboundary');
+  const confirm = () => {
+    orderTableServices.confirm(sessionStorage.getItem('orderid')).then((res) => {
+      console.log(res.data);
+    });
+    setOpen(false);
   };
 
   return (
     <Box>
       <Dialog
         open={open}
-        onClose={cancelPaying}
+        onClose={cancel}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description">
         <DialogTitle id="alert-dialog-title">{'Are you sure that you want to pay?'}</DialogTitle>
@@ -35,10 +37,10 @@ export default function Payment() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button color="primary" onClick={cancelPaying}>
+          <Button color="primary" onClick={cancel}>
             Cancel
           </Button>
-          <Button color="error" autoFocus onClick={confirmPayment}>
+          <Button color="error" autoFocus onClick={confirm}>
             Pay
           </Button>
         </DialogActions>

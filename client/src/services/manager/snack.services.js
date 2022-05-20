@@ -13,7 +13,7 @@ class snackService {
   delete(id) {
     return axios.delete(API_URL + '/' + id);
   }
-  getSession(id) {
+  getSnack(id) {
     return axios.get(API_URL + '/' + id);
   }
   edit(hall) {

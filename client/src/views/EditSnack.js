@@ -11,30 +11,29 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { snackTypes, sizes } from '../constants';
+import snackServices from '../services/manager/snack.services';
 
 function createData(Id, Title, Type, Price, Size) {
   return { Id, Title, Type, Price, Size };
 }
 
-const tempSnack = {
-  Id: 333,
-  Title: 'pavadinimas',
-  Type: 2,
-  Price: 11,
-  Size: 3
-};
 export default function EditSnack() {
   const { id } = useParams();
   const [snack, setSnack] = useState(createData(-1, '', -1, -1, -1));
 
   useEffect(() => {
     //api call
-    console.log(id);
-    setSnack(tempSnack);
+    snackServices.getSnack(id).then((res) => {
+      const snack = res.data;
+      setSnack(createData(snack.Id, snack.Title, snack.Type, snack.Price, snack.Size));
+    });
   }, []);
 
   const submit = (event) => {
     event.preventDefault();
+    snackServices.edit(snack).then((res) => {
+      alert(res.status == 200 ? 'Snack edited successfully.' : 'Error during edit.');
+    });
     console.log(snack);
   };
 

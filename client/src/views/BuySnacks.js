@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
+import orderTableServices from '../services/manager/orderTable.services';
 
 function createData(Title, Price, Type, Size, Id) {
   return { Title, Price, Type, Size, Id };
@@ -21,15 +22,28 @@ export default function BuySnacks() {
 
   useEffect(() => {
     //api call
-    setSnacks([createData('Title', 10.52, 'Meal', 'ThiCC', 1)]);
+    console.log('wat');
+    orderTableServices.getSnacks().then((res) => {
+      console.log(res.data);
+      const listSnacks = res.data;
+      setSnacks(
+        listSnacks.map((snack) =>
+          createData(snack.Title, snack.Price, snack.Type, snack.Size, snack.Id)
+        )
+      );
+      console.log(res.data);
+    });
   }, []);
 
-  const submit = () => {
+  const insertData = () => {
     const orderedSnack = {
       Amount: currentAmmount,
       FkSnackId: currentSnack,
       FkOrderTableId: sessionStorage.getItem('orderid')
     };
+    orderTableServices.addSnacks(orderedSnack).then((res) => {
+      alert(res.status == 200 ? 'Ordered snack added successfully.' : 'Error during add.');
+    });
     console.log(orderedSnack);
   };
 
@@ -70,7 +84,11 @@ export default function BuySnacks() {
       </Box>
       <br />
       <Box display={'flex'}>
-        <Button color="primary" variant="contained" sx={{ marginLeft: 'auto' }} onClick={submit}>
+        <Button
+          color="primary"
+          variant="contained"
+          sx={{ marginLeft: 'auto' }}
+          onClick={insertData}>
           Add to order
         </Button>
       </Box>

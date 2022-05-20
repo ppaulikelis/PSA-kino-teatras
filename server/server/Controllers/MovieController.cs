@@ -167,7 +167,7 @@ namespace server.Controllers
             _context.SaveChanges();
 
             //EMAIL SERVER API
-            var status = EmailBoundry.send(data);
+            var status = EmailBoundary.send(data);
 
             return Ok();
         }

@@ -17,7 +17,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import { Button, TableHead, Typography } from '@mui/material';
-import snackServices from '../services/manager/hall.services';
+import snackServices from '../services/manager/snack.services';
 
 function createData(Title, Price, Type, Size, Id) {
   return { Title, Price, Type, Size, Id };
