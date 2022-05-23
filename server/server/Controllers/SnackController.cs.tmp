@@ -18,13 +18,13 @@ namespace server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SessionController : Controller
+    public class SnackController : Controller
     {
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _env;
         private readonly DatabaseContext _context;
 
-        public SessionController(IConfiguration configuration, IWebHostEnvironment env, DatabaseContext context)
+        public SnackController(IConfiguration configuration, IWebHostEnvironment env, DatabaseContext context)
         {
             _configuration = configuration;
             _env = env;
@@ -32,39 +32,13 @@ namespace server.Controllers
         }
 
         [HttpGet]
-        public IActionResult showSessionList()
+        public IActionResult showSnackList()
         {
-            var x = _context.Sessions.ToList();
+            var x = _context.Snacks.ToList();
             return Ok(x);
         }
 
-        [HttpGet("getHalls")]
-        public IActionResult getHalls()
-        {
-            var data = _context.MovieTheatres.Join(
-                _context.MovieHalls,
-                theatre => theatre.Id,
-                hall => hall.FkMovieTheatreId,
-                (theatre, hall) => new
-                {
-                    TheatreAddress = theatre.Address,
-                    Hall = hall.Number,
-                    HallId = hall.Id
-                }
-            ).ToArray();
-
-            return Ok(data);
-        }
-
-        [HttpGet("getMovies")]
-        public IActionResult getMovies()
-        {
-            var movies = _context.Movies;
-            return Ok(movies);
-        }
-
-
-        public bool validate(Session x)
+        public bool validate(Snack x)
         {
             bool isNonNull = !(x == null);
             bool containsNullProperties = x.GetType().GetProperties()
@@ -75,7 +49,7 @@ namespace server.Controllers
         }
 
         [HttpPost]
-        public IActionResult addSession(Session x)
+        public IActionResult addSnack(Snack x)
         {
             bool isValid = validate(x);
             if (!isValid)
@@ -83,15 +57,14 @@ namespace server.Controllers
                 return BadRequest();
             }
 
-            var newX = new Session() { StartTime = x.StartTime, FkMovieId = x.FkMovieId, FkMovieHallId = x.FkMovieHallId };
-            _context.Sessions.Add(newX);
+            _context.Snacks.Add(x);
             _context.SaveChanges();
 
             return Ok();
         }
 
         [HttpPut]
-        public IActionResult editSession(Session x)
+        public IActionResult editSnack(Snack x)
         {
             bool isValid = validate(x);
             if (!isValid)
@@ -99,27 +72,29 @@ namespace server.Controllers
                 return BadRequest("Duomenys nėra tinkami.");
             }
 
-            var xToEdit = _context.Sessions.FirstOrDefault(xToEdit => xToEdit.Id == x.Id);
+            var xToEdit = _context.Snacks.FirstOrDefault(xToEdit => xToEdit.Id == xToEdit.Id);
             if (xToEdit == null)
             {
                 return NotFound();
             }
-            xToEdit.StartTime = x.StartTime;
-
+            xToEdit.Price = x.Price;
+            xToEdit.Size = x.Size;
+            xToEdit.Title = x.Title;
+            xToEdit.Type = x.Type;
             _context.SaveChanges();
 
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult deleteSession(int id)
+        public IActionResult deleteSnack(int id)
         {
-            var x = _context.Sessions.FirstOrDefault(x => x.Id == id);
+            var x = _context.Snacks.FirstOrDefault(x => x.Id == id);
             if (x == null)
             {
                 return BadRequest();
             }
-            _context.Sessions.Remove(x);
+            _context.Snacks.Remove(x);
             _context.SaveChanges();
             return Ok();
         }
@@ -127,7 +102,7 @@ namespace server.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var x = _context.Sessions.Where(x => x.Id == id).FirstOrDefault();
+            var x = _context.Snacks.Where(x => x.Id == id).FirstOrDefault();
             if (x == null)
             {
                 return BadRequest();

@@ -22,8 +22,8 @@ class sessionService {
   getSession(id) {
     return axios.get(API_URL + '/' + id);
   }
-  edit(hall) {
-    return axios.put(API_URL, hall);
+  editSession(session) {
+    return axios.put(API_URL, session);
   }
 }
 export default new sessionService();

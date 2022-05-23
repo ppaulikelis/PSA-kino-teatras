@@ -251,8 +251,9 @@ namespace server.Controllers
             else
             {
                 order.AnswerDate = status;
+                order.IsPaid = true;
                 _context.SaveChanges();
-                var result = formEmailRequests(order);
+                var result = formEmailRequests(order).Result;
                 return Ok(result);
             }
         }

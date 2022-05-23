@@ -16,7 +16,6 @@ namespace server.APIs
 
         async static Task<bool> send(OrderTable data)
         {
-            await Task.Delay(1000);
             return true;
         }
     }

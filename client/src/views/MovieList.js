@@ -24,6 +24,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import PropTypes from 'prop-types';
 import managerServices from '../services/manager/manager.services';
+import { genres } from '../constants';
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -187,7 +188,13 @@ export default function MovieList() {
                   <Typography component="div">{movie.title}</Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography component="div">{movie.genre}</Typography>
+                  <Typography component="div">
+                    {
+                      genres.filter((genre) => {
+                        return genre.id == movie.genre;
+                      })[0].name
+                    }
+                  </Typography>
                 </TableCell>
                 <TableCell align="right">
                   <Typography component="div">

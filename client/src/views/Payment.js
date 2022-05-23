@@ -18,7 +18,16 @@ export default function Payment() {
 
   const confirm = () => {
     orderTableServices.confirm(sessionStorage.getItem('orderid')).then((res) => {
-      console.log(res.data);
+      const post1 = res.data.Value.post1.Value;
+      const post2 = res.data.Value.post2.Value;
+      const date = new Date(post1.OrderDate);
+
+      alert('Date: ' + date.toLocaleDateString('en-US') + '  Is paid: ' + post1.IsPaid);
+      if (post2) {
+        alert('Email sent succesfully');
+      } else {
+        alert('Email failed to be sent');
+      }
     });
     setOpen(false);
   };

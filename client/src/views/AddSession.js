@@ -69,7 +69,7 @@ export default function AddSession() {
             value={currentMovie}
             focused
             onChange={(event) => setCurrentMovie(event.target.value)}
-            label="Title"
+            label="Movie title"
             required>
             {movies.map((movie, index) => (
               <MenuItem key={index} value={movie.Id}>
@@ -88,7 +88,7 @@ export default function AddSession() {
             value={currentMovieHall}
             focused
             onChange={(event) => setCurrentMovieHall(event.target.value)}
-            label="Hall"
+            label="Theatre address and hall"
             required>
             {movieHalls.map((movieHall, index) => (
               <MenuItem key={index} value={movieHall.HallId}>

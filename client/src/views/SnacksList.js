@@ -18,6 +18,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import { Button, TableHead, Typography } from '@mui/material';
 import snackServices from '../services/manager/snack.services';
+import { snackTypes, sizes } from '../constants';
 
 function createData(Title, Price, Type, Size, Id) {
   return { Title, Price, Type, Size, Id };
@@ -113,13 +114,25 @@ export default function SnacksList() {
                   <Typography component="div">{snack.Title}</Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography component="div">{snack.Type}</Typography>
+                  <Typography component="div">
+                    {
+                      snackTypes.find((type) => {
+                        return type.id == snack.Type;
+                      }).name
+                    }
+                  </Typography>
                 </TableCell>
                 <TableCell align="right">
                   <Typography component="div">{snack.Price}</Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography component="div">{snack.Size}</Typography>
+                  <Typography component="div">
+                    {
+                      sizes.find((size) => {
+                        return size.id == snack.Size;
+                      }).name
+                    }
+                  </Typography>
                 </TableCell>
                 <TableCell align="right">
                   <IconButton color="primary" onClick={() => navigate('editsnack/' + snack.Id)}>

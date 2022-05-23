@@ -10,31 +10,54 @@ import {
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import sessionServices from '../services/manager/session.services';
+
+function createMovie(Title, Id) {
+  return { Title, Id };
+}
+
+function createHall(TheatreAddress, Hall, HallId) {
+  return { TheatreAddress, Hall, HallId };
+}
+
+function createSession(Id, StartTime, FkMovieHallId, FkMovieId) {
+  return { Id, StartTime, FkMovieHallId, FkMovieId };
+}
 
 export default function EditSession() {
   const { id } = useParams();
-  const [movies, setMovies] = useState([]);
-  const [movieHalls, setMovieHalls] = useState([]);
-  const [currentMovie, setCurrentMovie] = useState(0);
-  const [currentMovieHall, setCurrentMovieHall] = useState(0);
+  const [movies, setMovies] = useState([createMovie('', -1)]);
+  const [movieHalls, setMovieHalls] = useState([createHall('', -1, -1)]);
+  const [session, setCurrentSession] = useState(createSession(-1, '', -1, -1));
 
   useEffect(() => {
     console.log(id);
-    setMovies([]);
-    setMovieHalls([]);
-    setCurrentMovie(1);
-    setCurrentMovieHall(1);
+    sessionServices.getHalls().then((res) => {
+      const hallList = res.data;
+      setMovieHalls(
+        hallList.map((hall) => createHall(hall.TheatreAddress, hall.Hall, hall.HallId))
+      );
+      console.log(hallList);
+    });
+    sessionServices.getMovies().then((res) => {
+      const movieList = res.data;
+      setMovies(movieList.map((movie) => createMovie(movie.Title, movie.Id)));
+      console.log(movieList);
+    });
+    sessionServices.getSession(id).then((res) => {
+      const session = res.data;
+      console.log(session);
+      setCurrentSession(
+        createSession(session.Id, session.StartTime, session.FkMovieHallId, session.FkMovieId)
+      );
+    });
   }, []);
 
   const editSession = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const session = {
-      StartTime: data.get('startTime'),
-      FkMovieId: currentMovie,
-      FkMovieHallId: currentMovieHall
-    };
-    console.log(session);
+    sessionServices.editSession(session).then((res) => {
+      alert(res.status == 200 ? 'Session updated successfully.' : 'Error during edit.');
+    });
   };
 
   return (
@@ -48,8 +71,8 @@ export default function EditSession() {
           <Select
             labelId="title-label"
             id="title"
-            value={currentMovie}
-            onChange={(event) => setCurrentMovie(event.target.value)}
+            value={session.FkMovieId}
+            onChange={(event) => setCurrentSession({ ...session, FkMovieId: event.target.value })}
             label="Title"
             required>
             {movies.map((movie, index) => (
@@ -66,20 +89,31 @@ export default function EditSession() {
           <Select
             labelId="hall-label"
             id="hall"
-            value={currentMovieHall}
-            onChange={(event) => setCurrentMovieHall(event.target.value)}
+            value={session.FkMovieHallId}
+            onChange={(event) =>
+              setCurrentSession({ ...session, FkMovieHallId: event.target.value })
+            }
             label="Hall"
             required>
             {movieHalls.map((movieHall, index) => (
-              <MenuItem key={index} value={movieHall.Id}>
-                {movieHall.Number}
+              <MenuItem key={index} value={movieHall.HallId}>
+                {movieHall.Hall}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
         <br />
         <br />
-        <TextField focused name="startTime" label="Start time" type="time" fullWidth required />
+        <TextField
+          focused
+          name="startTime"
+          label="Start time"
+          type="time"
+          fullWidth
+          required
+          value={session.StartTime}
+          onChange={(event) => setCurrentSession({ ...session, StartTime: event.target.value })}
+        />
         <br />
         <br />
         <Box display={'flex'}>
